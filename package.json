@@ -1,0 +1,52 @@
+{
+  "name": "@root/monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "root": true,
+  "type": "module",
+  "packageManager": "npm@10.8.3",
+  "workspaces": [
+    "apps/*",
+    "libs.i-ark/*",
+    "libs.pm2/*",
+    "libs.providers/*",
+    "libs.ui/*",
+    "libs.utils/*",
+    "tooling/*"
+  ],
+  "scripts": {
+    "eslint": "npx turbo run eslint --continue",
+    "eslint:watch": "npx turbo run eslint --parallel --concurrency=100 -- --watch",
+    "stylelint": "npx turbo run stylelint --continue",
+    "type-check": "npx turbo run type-check --continue",
+    "type-check:watch": "npx turbo run type-check --parallel --concurrency=100 -- --watch --preserveWatchOutput",
+    "dev": "cd apps/dimension; npm run dev:app",
+    "prettier:format": "prettier --write .",
+    "prettier:check": "prettier --check .",
+    "cache:purge": "rimraf --glob '**/.turbo'; rimraf --glob '**/.cache'; rimraf --glob '**/.eslintcache'; rimraf --glob '**/.stylelintcache'; rimraf --glob '**/tsconfig.tsbuildinfo'; rimraf --glob '**/.next'; rimraf --glob 'libs.*/*/lib'; rimraf --glob 'apps/*/lib'",
+    "prepare": "husky || true",
+    "postinstall": "patch-package || true"
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.27.8",
+    "@changesets/read": "^0.6.1",
+    "@changesets/write": "^0.3.2",
+    "core-js": "^3.38.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.4.1",
+    "@commitlint/config-conventional": "^19.4.1",
+    "@types/node": "^20.16.5",
+    "dotenv": "^16.4.5",
+    "husky": "^9.1.5",
+    "patch-package": "^8.0.0",
+    "prettier": "^3.3.3",
+    "pretty-quick": "^4.0.0",
+    "rimraf": "^6.0.1",
+    "stylelint": "^16.9.0",
+    "turbo": "^2.1.1",
+    "zx": "^8.1.5"
+  }
+}

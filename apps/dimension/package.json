@@ -1,0 +1,39 @@
+{
+  "name": "@apps/dimension",
+  "version": "0.0.0",
+  "license": "UNLICENSED",
+  "type": "module",
+  "sideEffects": [
+    "global.*",
+    "*.css"
+  ],
+  "scripts": {
+    "eslint": "eslint --cache --no-error-on-unmatched-pattern --max-warnings 20 '{src,pages}/**/*.{js,jsx,ts,tsx,mjs}'",
+    "stylelint": "stylelint --cache '{src,pages}/**/*.{js,jsx,ts,tsx,mjs,css,scss}'",
+    "type-check": "tsc -p tsconfig.json --noEmit",
+    "build:app": "next build",
+    "start:app": "next start",
+    "dev:app": "next dev -p 3000"
+  },
+  "dependencies": {
+    "@linaria/core": "^6.2.0",
+    "dotenv": "^16.4.5",
+    "next": "14.2.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-transition-group": "^4.4.5"
+  },
+  "devDependencies": {
+    "@babel/runtime-corejs3": "^7.25.6",
+    "@next/bundle-analyzer": "14.2.7",
+    "@tooling/babel-config": "*",
+    "@tooling/eslint-config": "*",
+    "@tooling/linaria-config": "*",
+    "@tooling/next-config": "*",
+    "@tooling/stylelint-config": "*",
+    "@tooling/typescript-config": "*",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@types/react-transition-group": "^4.4.11"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@tooling/linaria-config",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./recommended": {
+      "default": "./recommended.js"
+    }
+  },
+  "scripts": {
+    "eslint": "eslint --cache --no-error-on-unmatched-pattern --max-warnings 20 './*.{js,jsx,ts,tsx,mjs}'"
+  },
+  "peerDependencies": {
+    "@linaria/core": "^6.2.0"
+  },
+  "dependencies": {
+    "@wyw-in-js/webpack-loader": "^0.5.4"
+  },
+  "devDependencies": {
+    "@tooling/eslint-config": "*"
+  }
+}

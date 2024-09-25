@@ -1,0 +1,27 @@
+{
+  "name": "@tooling/babel-config",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./recommended": {
+      "default": "./recommended.js"
+    }
+  },
+  "scripts": {
+    "eslint": "eslint --cache --no-error-on-unmatched-pattern --max-warnings 20 './*.{js,jsx,ts,tsx,mjs}'"
+  },
+  "dependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/plugin-proposal-decorators": "^7.24.7",
+    "@babel/plugin-transform-class-properties": "^7.25.4",
+    "@babel/plugin-transform-runtime": "^7.25.4",
+    "@babel/preset-env": "^7.25.4",
+    "@babel/preset-react": "^7.24.7",
+    "@babel/preset-typescript": "^7.24.7",
+    "@babel/runtime-corejs3": "^7.25.6",
+    "@wyw-in-js/babel-preset": "^0.5.4"
+  },
+  "devDependencies": {
+    "@tooling/eslint-config": "*"
+  }
+}
