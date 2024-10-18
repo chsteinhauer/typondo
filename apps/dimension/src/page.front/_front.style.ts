@@ -4,6 +4,8 @@ export const crossfadeDurationMs = 150;
 
 export const wrapper = css`
   font-size: 30px;
+  width: 100%;
+  height: 100%;
 `;
 
 export const boxWrapper = css`

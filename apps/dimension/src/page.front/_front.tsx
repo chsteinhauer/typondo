@@ -44,7 +44,6 @@ export function Frontpage(props: FrontpageProps) {
           </CSSTransition>
         )}
       </TransitionGroup> */}
-
       <Editor />
     </div>
   );

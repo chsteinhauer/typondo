@@ -10,6 +10,8 @@ css`
       --secondary-color-dark: #447784;
       --secondary-color: #6b949e;
       --secondary-color-light: #a9c4ca;
+
+      --background-color: #e8e8e8;
     }
 
     #__next,
@@ -25,9 +27,18 @@ css`
   }
 `;
 
-export const pagewrapper = css`
+export const app_wrapper = css`
   display: flex;
   flex-direction: row;
   width: 100%;
   height: 100%;
+`;
+
+export const page_wrapper = css`
+  overflow-y: scroll;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  background-color: var(--background-color);
 `;
