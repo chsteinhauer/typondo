@@ -4,6 +4,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import * as styles from "./_front.style";
 import { Menu } from "./menu";
 import Link from "next/link";
+import { Editor } from "../page.editor/_editor";
 
 export type FrontpageProps = {
   myServerSideProp: string;
@@ -43,6 +44,8 @@ export function Frontpage(props: FrontpageProps) {
           </CSSTransition>
         )}
       </TransitionGroup> */}
+
+      <Editor />
     </div>
   );
 }

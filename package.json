@@ -27,7 +27,9 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "core-js": "^3.38.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-quill": "^2.0.0",
+    "react-quill-new": "^3.3.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.4.1",
