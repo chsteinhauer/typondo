@@ -2,13 +2,15 @@ import { useState } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import * as styles from "./_front.style";
+import { Menu } from "./menu";
+import Link from "next/link";
 
 export type FrontpageProps = {
   myServerSideProp: string;
 };
 
 export function Frontpage(props: FrontpageProps) {
-  const [toggle, setToggle] = useState(false);
+  const [showBox, setShowBox] = useState(false);
 
   console.log(props);
 
@@ -21,24 +23,26 @@ export function Frontpage(props: FrontpageProps) {
 
   return (
     <div className={styles.wrapper}>
-      <div>I come from the server: {props.myServerSideProp}</div>
+      {/* <div>I come from the server: {props.myServerSideProp}</div>
+
+      <Link href="/another">to another</Link>
 
       <button onClick={fetchData}>Fetch data from API</button>
 
-      <button onClick={() => setToggle((prev) => !prev)}>Toggle</button>
+      <button onClick={() => setShowBox((prev) => !prev)}>Toggle</button>
+
+      <Menu myMenuProp="hello" />
 
       <TransitionGroup className={styles.boxWrapper} component="div">
-        <CSSTransition
-          key={String(toggle)}
-          timeout={styles.crossfadeDurationMs}
-          classNames={styles.box}
-        >
-          <div
-            className={styles.box}
-            style={{ background: toggle ? "green" : "red" }}
-          />
-        </CSSTransition>
-      </TransitionGroup>
+        {showBox && (
+          <CSSTransition
+            timeout={styles.crossfadeDurationMs}
+            classNames={styles.box}
+          >
+            <div className={styles.box} />
+          </CSSTransition>
+        )}
+      </TransitionGroup> */}
     </div>
   );
 }

@@ -14,6 +14,8 @@ export const box = css`
   height: 150px;
   width: 150px;
 
+  background: red;
+
   &-enter {
     opacity: 0;
 
@@ -24,10 +26,6 @@ export const box = css`
   }
 
   &-exit {
-    position: absolute;
-    top: 0;
-    left: 0;
-
     opacity: 1;
 
     &-active {
