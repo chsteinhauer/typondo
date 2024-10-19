@@ -3,38 +3,38 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
 
-export async function createUserHandler(
+export async function createFileHandler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   const { body } = req;
-  const user = await prisma.user.create({
+  const file = await prisma.file.create({
     data: {
-      name: body.name,
-      email: body.email,
+      title: body.title,
+      authorId: body.authorId,
     },
   });
 
   res.end(
     JSON.stringify({
       message: "ok",
-      user,
+      file,
     }),
   );
 }
 
-export async function getUserHandler(
+export async function getFileHandler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const user = await prisma.user.findUnique({
+  const file = await prisma.file.findUnique({
     where: { id: Number(req.query?.["id"]) },
   });
 
   res.end(
     JSON.stringify({
       message: "ok",
-      user,
+      file,
     }),
   );
 }

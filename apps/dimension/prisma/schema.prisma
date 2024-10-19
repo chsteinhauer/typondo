@@ -16,27 +16,30 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  files File[]
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  name    String?
+  files   File[]
   folders Folder[]
 }
 
 model File {
-  id        Int     @id @default(autoincrement())
-  title     String
-  htmlContent   String?
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
-  folder    Folder?    @relation(fields: [folderId], references: [id])
-  folderId  Int?
+  id          Int     @id @default(autoincrement())
+  title       String
+  htmlContent String?
+  author      User    @relation(fields: [authorId], references: [id])
+  authorId    Int
+  folder      Folder? @relation(fields: [folderId], references: [id])
+  folderId    Int?
 }
 
 model Folder {
-  id        Int     @id @default(autoincrement())
-  title     String
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
-  files     File[]
+  id         Int      @id @default(autoincrement())
+  title      String
+  author     User     @relation(fields: [authorId], references: [id])
+  authorId   Int
+  folderId   Int
+  folder     Folder?  @relation("Subfolders", fields: [folderId], references: [id])
+  subfolders Folder[] @relation("Subfolders")
+  files      File[]
 }

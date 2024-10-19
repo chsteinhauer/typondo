@@ -1,11 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as styles from "./_menu.style";
-import { MenuItem, items } from "./_menu.static";
 import { useState } from "react";
+
+import type { MenuItem } from "./_menu.static";
+import { items } from "./_menu.static";
+import * as styles from "./_menu.style";
 
 export function Menu() {
   const [menuItem, setMenuItem] = useState<MenuItem | undefined>();
-  let focus: MenuItem | undefined = undefined;
 
   function generateMenuItems() {
     return (
@@ -15,8 +16,6 @@ export function Menu() {
             key={item.key}
             className={styles.item}
             onClick={() => {
-              focus = item;
-
               setMenuItem((prev) =>
                 prev?.key === item.key ? undefined : item,
               );
