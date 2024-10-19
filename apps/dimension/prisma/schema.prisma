@@ -38,7 +38,7 @@ model Folder {
   title      String
   author     User     @relation(fields: [authorId], references: [id])
   authorId   Int
-  folderId   Int
+  folderId   Int?
   folder     Folder?  @relation("Subfolders", fields: [folderId], references: [id])
   subfolders Folder[] @relation("Subfolders")
   files      File[]

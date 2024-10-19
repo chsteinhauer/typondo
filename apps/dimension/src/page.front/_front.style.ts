@@ -3,9 +3,10 @@ import { css } from "@linaria/core";
 export const crossfadeDurationMs = 150;
 
 export const wrapper = css`
-  font-size: 30px;
-  width: 100%;
   height: 100%;
+  width: 100%;
+
+  font-size: 30px;
 `;
 
 export const boxWrapper = css`

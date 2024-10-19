@@ -1,12 +1,64 @@
-import * as styles from "./_explorer.styles";
-import { faFolder } from "@fortawesome/free-solid-svg-icons";
+import { faFolder, faFileLines } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { Folder, User, File } from "@prisma/client";
 
-export function Explorer() {
+import * as styles from "./_explorer.styles";
+
+export type ExplorerProps = {
+  folders: Folder[];
+  files: File[];
+};
+
+export function Explorer(props: ExplorerProps) {
+  console.log(props);
+  const { folders, files } = props;
+
+  const generateFolder = (folder: Folder) => {
+    const childFolders = folders.filter((f) => f.folderId === folder.id);
+    const childFiles = files.filter((f) => f.folderId === folder.id);
+
+    return (
+      <li key={"folder-item" + folder.id}>
+        <details key={"folder-button" + folder.id}>
+          <summary className={styles.item}>
+            <FontAwesomeIcon icon={faFolder} />
+            <span className={styles.item_text}>{folder.title}</span>
+          </summary>
+          {childFolders.map((f) => (
+            <ul key={"folder" + f.id}> {generateFolder(f)} </ul>
+          ))}
+          <ul key={"files" + folder.id}> {generateFiles(childFiles)}</ul>
+        </details>
+      </li>
+    );
+  };
+
+  const generateFiles = (_files: File[]) => {
+    return _files.map((file) => {
+      return (
+        <li key={"file" + file.id} className={styles.item}>
+          <FontAwesomeIcon icon={faFileLines} />
+          <span className={styles.item_text}>{file.title + file.id}</span>
+        </li>
+      );
+    });
+  };
+
+  // const generateFileTree = () => {
+  //   return <></>;
+  // };
   return (
     <ul className={styles.tree}>
-      <li>
-        <details open>
-          <summary className={styles.item}>Giant planets</summary>
+      {folders
+        .filter((f) => f.folderId === null)
+        .map((folder) => generateFolder(folder))}
+      {generateFiles(files.filter((f) => f.folderId === null))}
+    </ul>
+  );
+}
+
+{
+  /* <summary className={styles.item}>Giant planets</summary>
           <ul>
             <li>
               <details>
@@ -26,9 +78,5 @@ export function Explorer() {
                 </ul>
               </details>
             </li>
-          </ul>
-        </details>
-      </li>
-    </ul>
-  );
+          </ul> */
 }

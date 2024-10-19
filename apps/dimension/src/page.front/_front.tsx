@@ -1,20 +1,19 @@
-import Link from "next/link";
+import type { Folder, User, File } from "@prisma/client";
 import { useState } from "react";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 
+import AppWrapper from "../app.wrapper/app.wrapper";
 import { Editor } from "../page.editor/_editor";
 
 import * as styles from "./_front.style";
-import { Menu } from "./menu";
 
 export type FrontpageProps = {
-  myServerSideProp: string;
+  user: User | null;
+  folders: Folder[];
+  files: File[];
 };
 
 export function Frontpage(props: FrontpageProps) {
   const [showBox, setShowBox] = useState(false);
-
-  console.log(props);
 
   const fetchData = async () => {
     // const res = await fetch("/api/user/1");
@@ -38,6 +37,7 @@ export function Frontpage(props: FrontpageProps) {
       body: JSON.stringify({
         title: "test",
         authorId: 2,
+        folderId: 1,
       }),
     });
 
@@ -47,8 +47,11 @@ export function Frontpage(props: FrontpageProps) {
   };
 
   return (
-    <div className={styles.wrapper}>
-      {/* <div>I come from the server: {props.myServerSideProp}</div>
+    <AppWrapper
+      menu={{ files: props.files, folders: props.folders, user: props.user }}
+    >
+      <div className={styles.wrapper}>
+        {/* <div>I come from the server: {props.myServerSideProp}</div>
 
       <Link href="/another">to another</Link>
 
@@ -67,9 +70,10 @@ export function Frontpage(props: FrontpageProps) {
           </CSSTransition>
         )}
       </TransitionGroup> */}
-      <button onClick={fetchData}>Fetch data from API</button>
+        {/* <button onClick={fetchData}>Fetch data from API</button> */}
 
-      <Editor />
-    </div>
+        <Editor />
+      </div>
+    </AppWrapper>
   );
 }

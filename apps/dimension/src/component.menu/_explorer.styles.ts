@@ -5,6 +5,7 @@ export const crossfadeDurationMs = 150;
 export const tree = css`
   --spacing: 1rem;
   --radius: 10px;
+
   padding: 0;
   font-size: 14px;
 
@@ -15,9 +16,9 @@ export const tree = css`
   }
 
   li {
-    display: block;
     position: relative;
     padding-left: calc(2 * var(--spacing) - var(--radius) - 2px);
+    display: block;
   }
 
   ul {
@@ -26,8 +27,8 @@ export const tree = css`
   }
 
   ul li {
-    transition: border-left 150ms linear;
     border-left: 1px solid transparent;
+    transition: border-left 150ms linear;
   }
 
   &:hover ul li {
@@ -68,14 +69,18 @@ export const tree = css`
   li::after,
   summary::before {
     content: "";
-    display: block;
+
     position: absolute;
     top: calc(var(--spacing) / 2 - var(--radius));
     left: calc(var(--spacing) - var(--radius) - 1px);
-    width: calc(2 * var(--radius));
+
     height: calc(2 * var(--radius));
-    border-radius: 50%;
+    width: calc(2 * var(--radius));
+
     background: transparent;
+    border-radius: 50%;
+
+    display: block;
   }
 
   summary::before {
@@ -89,7 +94,12 @@ export const tree = css`
 
 export const item = css`
   cursor: pointer;
+
   &:hover {
     background-color: var(--primary-color-light);
   }
+`;
+
+export const item_text = css`
+  margin-left: 7px;
 `;

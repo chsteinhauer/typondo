@@ -1,11 +1,18 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { Folder, User, File } from "@prisma/client";
 import { useState } from "react";
 
 import type { MenuItem } from "./_menu.static";
 import { items } from "./_menu.static";
 import * as styles from "./_menu.style";
 
-export function Menu() {
+export type MenuProps = {
+  user: User | null;
+  folders: Folder[];
+  files: File[];
+};
+
+export function Menu(props: MenuProps) {
   const [menuItem, setMenuItem] = useState<MenuItem | undefined>();
 
   function generateMenuItems() {
@@ -31,7 +38,11 @@ export function Menu() {
   return (
     <div className={styles.wrapper}>
       {generateMenuItems()}
-      {menuItem && <div className={styles.panel}>{menuItem.panel}</div>}
+      {menuItem && (
+        <div className={styles.panel}>
+          {menuItem.panel(props.folders, props.files)}
+        </div>
+      )}
     </div>
   );
 }

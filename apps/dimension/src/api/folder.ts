@@ -3,12 +3,12 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
 
-export async function createFileHandler(
+export async function createFolderHandler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   const { body } = req;
-  const file = await prisma.file.create({
+  const folder = await prisma.folder.create({
     data: {
       title: body.title,
       authorId: body.authorId,
@@ -19,23 +19,7 @@ export async function createFileHandler(
   res.end(
     JSON.stringify({
       message: "ok",
-      file,
-    }),
-  );
-}
-
-export async function getFileHandler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
-  const file = await prisma.file.findUnique({
-    where: { id: Number(req.query?.["id"]) },
-  });
-
-  res.end(
-    JSON.stringify({
-      message: "ok",
-      file,
+      folder,
     }),
   );
 }
