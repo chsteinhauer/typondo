@@ -1,6 +1,6 @@
 import { faFolder, faFileLines } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import type { Folder, User, File } from "@prisma/client";
+import type { Folder, File } from "@prisma/client";
 
 import * as styles from "./_explorer.styles";
 
@@ -10,7 +10,6 @@ export type ExplorerProps = {
 };
 
 export function Explorer(props: ExplorerProps) {
-  console.log(props);
   const { folders, files } = props;
 
   const generateFolder = (folder: Folder) => {

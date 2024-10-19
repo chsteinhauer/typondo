@@ -11,7 +11,7 @@ import { Explorer } from "./_explorer";
 export type MenuItem = {
   key: string;
   icon: IconProp;
-  focus: boolean;
+  selected: boolean;
   panel?: any;
 };
 
@@ -19,7 +19,7 @@ export const items: MenuItem[] = [
   {
     key: "Explorer",
     icon: faFile,
-    focus: false,
+    selected: false,
     panel: (folders: Folder[], files: File[]) => (
       <Explorer files={files} folders={folders} />
     ),
@@ -27,11 +27,11 @@ export const items: MenuItem[] = [
   {
     key: "Search",
     icon: faMagnifyingGlass,
-    focus: false,
+    selected: false,
   },
   {
     key: "Random",
     icon: faNetworkWired,
-    focus: false,
+    selected: false,
   },
 ];

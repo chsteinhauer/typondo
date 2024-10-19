@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { cx } from "@linaria/core";
 import type { Folder, User, File } from "@prisma/client";
 import { useState } from "react";
 
@@ -21,11 +22,13 @@ export function Menu(props: MenuProps) {
         {items.map((item) => (
           <button
             key={item.key}
-            className={styles.item}
+            className={cx(styles.item, item.selected && styles.selected_item)}
             onClick={() => {
-              setMenuItem((prev) =>
-                prev?.key === item.key ? undefined : item,
-              );
+              setMenuItem((prev) => {
+                if (prev) prev.selected = false;
+                if (prev?.key != item.key) item.selected = true;
+                return prev?.key === item.key ? undefined : item;
+              });
             }}
           >
             <FontAwesomeIcon className={styles.icon} icon={item.icon} />
@@ -40,7 +43,7 @@ export function Menu(props: MenuProps) {
       {generateMenuItems()}
       {menuItem && (
         <div className={styles.panel}>
-          {menuItem.panel(props.folders, props.files)}
+          {menuItem.panel?.(props.folders, props.files)}
         </div>
       )}
     </div>
