@@ -16,11 +16,17 @@ export const editor_canvas = css`
   height: 297mm;
   width: 210mm;
   margin: 24px auto;
-  padding: 24px;
+
   cursor: text;
 
   background-color: white;
   border: 1px solid lightgray;
 `;
 
-export const editor_content = css``;
+export const editor_content = css`
+  margin: 96px;
+
+  .ProseMirror:focus {
+    outline: none;
+  }
+`;

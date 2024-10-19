@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "dev": "cd apps/dimension; npm run dev:app",
+    "dev:db": "docker-compose up",
     "prettier:format": "prettier --write .",
     "prettier:check": "prettier --check .",
     "cache:purge": "rimraf --glob '**/.turbo'; rimraf --glob '**/.cache'; rimraf --glob '**/.eslintcache'; rimraf --glob '**/.stylelintcache'; rimraf --glob '**/tsconfig.tsbuildinfo'; rimraf --glob '**/.next'; rimraf --glob 'libs.*/*/lib'; rimraf --glob 'apps/*/lib'",

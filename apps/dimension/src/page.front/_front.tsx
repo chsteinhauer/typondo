@@ -1,10 +1,11 @@
+import Link from "next/link";
 import { useState } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
+import { Editor } from "../page.editor/_editor";
+
 import * as styles from "./_front.style";
 import { Menu } from "./menu";
-import Link from "next/link";
-import { Editor } from "../page.editor/_editor";
 
 export type FrontpageProps = {
   myServerSideProp: string;
@@ -16,7 +17,7 @@ export function Frontpage(props: FrontpageProps) {
   console.log(props);
 
   const fetchData = async () => {
-    const res = await fetch("/api/heartbeat");
+    const res = await fetch("/api/user/1");
     const data = await res.json();
 
     console.log(data);
@@ -28,7 +29,6 @@ export function Frontpage(props: FrontpageProps) {
 
       <Link href="/another">to another</Link>
 
-      <button onClick={fetchData}>Fetch data from API</button>
 
       <button onClick={() => setShowBox((prev) => !prev)}>Toggle</button>
 
@@ -44,6 +44,8 @@ export function Frontpage(props: FrontpageProps) {
           </CSSTransition>
         )}
       </TransitionGroup> */}
+      <button onClick={fetchData}>Fetch data from API</button>
+
       <Editor />
     </div>
   );
