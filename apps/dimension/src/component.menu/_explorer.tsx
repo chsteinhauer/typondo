@@ -7,6 +7,7 @@ import * as styles from "./_explorer.styles";
 export type ExplorerProps = {
   folders: Folder[];
   files: File[];
+  fileClickedHandler: (file: File) => void;
 };
 
 export function Explorer(props: ExplorerProps) {
@@ -35,7 +36,12 @@ export function Explorer(props: ExplorerProps) {
   const generateFiles = (_files: File[]) => {
     return _files.map((file) => {
       return (
-        <li key={"file" + file.id} className={styles.item}>
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
+        <li
+          key={"file" + file.id}
+          className={styles.item}
+          onClick={() => props.fileClickedHandler(file)}
+        >
           <FontAwesomeIcon icon={faFileLines} />
           <span className={styles.item_text}>{file.title + file.id}</span>
         </li>

@@ -11,6 +11,7 @@ export type MenuProps = {
   user: User | null;
   folders: Folder[];
   files: File[];
+  fileClickedHandler: (file: File) => void;
 };
 
 export function Menu(props: MenuProps) {
@@ -43,7 +44,11 @@ export function Menu(props: MenuProps) {
       {generateMenuItems()}
       {menuItem && (
         <div className={styles.panel}>
-          {menuItem.panel?.(props.folders, props.files)}
+          {menuItem.panel?.(
+            props.folders,
+            props.files,
+            props.fileClickedHandler,
+          )}
         </div>
       )}
     </div>

@@ -20,8 +20,16 @@ export const items: MenuItem[] = [
     key: "Explorer",
     icon: faFile,
     selected: false,
-    panel: (folders: Folder[], files: File[]) => (
-      <Explorer files={files} folders={folders} />
+    panel: (
+      folders: Folder[],
+      files: File[],
+      fileClickedHandler: (file: File) => File,
+    ) => (
+      <Explorer
+        files={files}
+        folders={folders}
+        fileClickedHandler={fileClickedHandler}
+      />
     ),
   },
   {

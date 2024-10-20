@@ -40,7 +40,7 @@ export const page_wrapper = css`
   margin: 0;
   padding: 0;
 
-  height: 100%;
+  height: 100vh;
   width: 100%;
 
   background-color: var(--background-color);

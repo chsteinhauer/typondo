@@ -24,6 +24,28 @@ export async function createFileHandler(
   );
 }
 
+export async function updateFileHandler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  const { body } = req;
+  const file = await prisma.file.update({
+    where: { id: body.id },
+    data: {
+      title: body.title,
+      folderId: body.folderId,
+      htmlContent: body.htmlContent,
+    },
+  });
+
+  res.end(
+    JSON.stringify({
+      message: "ok",
+      file,
+    }),
+  );
+}
+
 export async function getFileHandler(
   req: NextApiRequest,
   res: NextApiResponse,
