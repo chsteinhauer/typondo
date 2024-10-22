@@ -43,7 +43,12 @@ export function Menu(props: MenuProps) {
     <div className={styles.wrapper}>
       {generateMenuItems()}
       {menuItem && (
-        <div className={styles.panel}>
+        <div
+          className={styles.panel}
+          onContextMenu={(e) => {
+            e.preventDefault();
+          }}
+        >
           {menuItem.panel?.(
             props.folders,
             props.files,

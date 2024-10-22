@@ -31,7 +31,7 @@ export function Editor(props: EditorProps) {
         console.log(editor?.getHTML());
         await updateFile(file);
 
-        console.log("saved!!!");
+        editor?.commands.blur();
       }
     };
 
