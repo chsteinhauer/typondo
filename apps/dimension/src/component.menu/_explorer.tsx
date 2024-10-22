@@ -4,9 +4,9 @@ import { cx } from "@linaria/core";
 import type { Folder, File } from "@prisma/client";
 import { useState } from "react";
 
-import type { ContextMenuItem } from "../component.dropdown/_contextmenu";
-import { ContextMenu } from "../component.dropdown/_contextmenu";
-import { useContextMenu } from "../component.dropdown/_contextmenu.hooks";
+import type { ContextMenuItem } from "../component.contextmenu/_contextmenu";
+import { ContextMenu } from "../component.contextmenu/_contextmenu";
+import { useContextMenu } from "../component.contextmenu/_contextmenu.hooks";
 
 import * as styles from "./_explorer.styles";
 
