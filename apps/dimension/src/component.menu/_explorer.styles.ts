@@ -69,7 +69,7 @@ export const tree = css`
 
     z-index: 1;
 
-    margin-top: 5px;
+    margin-top: 7px;
     margin-left: 3px;
 
     height: 12px;
@@ -87,7 +87,7 @@ export const tree = css`
 `;
 
 export const item = css`
-  padding: 3px 0;
+  padding-block: 3px;
   border: 1px solid transparent;
   cursor: pointer;
 
@@ -96,10 +96,15 @@ export const item = css`
   }
 
   &.selected {
+    background-color: var(--complementary-color-light-trans);
     border: 1px solid var(--complementary-color-light);
   }
 `;
 
 export const item_text = css`
   margin-left: 7px;
+`;
+
+export const indentation = css`
+  padding-left: calc(20px + var(--depth, 1) * 7px);
 `;

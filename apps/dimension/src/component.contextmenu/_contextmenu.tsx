@@ -2,14 +2,14 @@ import * as styles from "./_contextmenu.styles";
 
 export type ContextMenuProps = {
   items: ContextMenuItem[];
-  params: any;
+  params: unknown;
   top: number;
   left: number;
 };
 
 export type ContextMenuItem = {
   text: string;
-  clickHandler: (params: any) => void;
+  clickHandler: (params: unknown) => void;
 };
 
 export function ContextMenu(props: ContextMenuProps) {

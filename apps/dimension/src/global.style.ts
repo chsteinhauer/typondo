@@ -13,6 +13,7 @@ css`
       --background-color: #e8e8e8;
       --complementary-color: #4f1b0f;
       --complementary-color-light: #b43e22;
+      --complementary-color-light-trans: #b43e2252;
     }
 
     #__next,

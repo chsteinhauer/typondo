@@ -56,16 +56,21 @@ export function Explorer(props: ExplorerProps) {
               selectedId === "folder" + folder.id ? "selected" : "",
             )}
             onClick={() => setSelected(folder, "folder")}
+            onContextMenu={() => setSelected(folder, "folder")}
           >
-            <div style={{ paddingLeft: 20 + 7 * depth++ + "px" }}>
+            {/** @ts-expect-error poor typings */}
+            <div className={styles.indentation} style={{ "--depth": depth }}>
               <FontAwesomeIcon icon={faFolder} />
               <span className={styles.item_text}>{folder.title}</span>
             </div>
           </summary>
           {childFolders.map((f) => (
-            <ul key={"folder" + f.id}> {generateFolder(f, depth)} </ul>
+            <ul key={"folder" + f.id}> {generateFolder(f, depth + 1)} </ul>
           ))}
-          <ul key={"files" + folder.id}> {generateFiles(childFiles, depth)}</ul>
+          <ul key={"files" + folder.id}>
+            {" "}
+            {generateFiles(childFiles, depth + 1)}
+          </ul>
         </details>
       </li>
     );
@@ -82,13 +87,16 @@ export function Explorer(props: ExplorerProps) {
             setSelected(file, "file");
             props.fileClickedHandler(file);
           }}
+          onContextMenu={() => setSelected(file, "file")}
         >
           <div
             className={cx(
               styles.item,
+              styles.indentation,
               selectedId === "file" + file.id ? "selected" : "",
             )}
-            style={{ paddingLeft: 20 + 7 * depth + "px" }}
+            /** @ts-expect-error poor typings */
+            style={{ "--depth": depth }}
           >
             <FontAwesomeIcon icon={faFileLines} />
             <span className={styles.item_text}>{file.title + file.id}</span>
