@@ -101,8 +101,10 @@ export const item = css`
   }
 `;
 
-export const item_text = css`
-  margin-left: 7px;
+export const content = css`
+  display: flex;
+  flex-direction: row;
+  gap: 7px;
 `;
 
 export const indentation = css`

@@ -4,10 +4,15 @@ import { cx } from "@linaria/core";
 import type { Folder, File } from "@prisma/client";
 import { useEffect, useState } from "react";
 
-import type { UserWithRelations } from "../api/requests";
+import {
+  updateFile,
+  updateFolder,
+  type UserWithRelations,
+} from "../api/requests";
 import type { ContextMenuItem } from "../component.contextmenu/_contextmenu";
 import { ContextMenu } from "../component.contextmenu/_contextmenu";
 import { useContextMenu } from "../component.contextmenu/_contextmenu.hooks";
+import { InputEdit } from "../component.editinput/_editinput";
 
 import * as styles from "./_explorer.styles";
 
@@ -26,8 +31,7 @@ type ExplorerItem = {
 
 export function Explorer(props: ExplorerProps) {
   const { clicked, setClicked, coords, setCoords } = useContextMenu();
-  const [selectedItem, setSelectedItem] = useState<File | Folder>();
-  const [selectedId, setSelectedId] = useState<string>();
+  const [selectedItem, setSelectedItem] = useState<ExplorerItem>();
   const [contextMenuItems, setContextMenuItems] = useState<ContextMenuItem[]>(
     [],
   );
@@ -73,7 +77,7 @@ export function Explorer(props: ExplorerProps) {
       },
     ];
 
-    if (selectedId?.includes("folder")) {
+    if (selectedItem?.type === "folder") {
       setContextMenuItems([
         {
           text: "New file",
@@ -92,11 +96,15 @@ export function Explorer(props: ExplorerProps) {
     } else {
       setContextMenuItems(generalItems);
     }
-  }, [selectedId, selectedItem]);
+  }, [selectedItem]);
 
-  const setSelected = (item: File | Folder, type: string) => {
-    setSelectedItem(item);
-    setSelectedId(type + item.id);
+  const setSelected = (expItem: ExplorerItem) => {
+    setSelectedItem((prev) => {
+      if (prev) prev.selected = false;
+      expItem.selected = true;
+
+      return expItem;
+    });
   };
 
   const generateFolder = (folderItem: ExplorerItem, depth: number) => {
@@ -112,15 +120,27 @@ export function Explorer(props: ExplorerProps) {
           <summary
             className={cx(
               styles.item,
-              selectedId === "folder" + folder.id ? "selected" : "",
+              selectedItem?.type === "folder" &&
+                folderItem.item.id === selectedItem?.item.id
+                ? "selected"
+                : "",
             )}
-            onClick={() => setSelected(folder, "folder")}
-            onContextMenu={() => setSelected(folder, "folder")}
+            onClick={() => setSelected(folderItem)}
+            onContextMenu={() => setSelected(folderItem)}
           >
-            {/** @ts-expect-error poor typings */}
-            <div className={styles.indentation} style={{ "--depth": depth }}>
+            <div
+              className={cx(styles.indentation, styles.content)}
+              //{/** @ts-expect-error poor typings */}
+              style={{ "--depth": depth }}
+            >
               <FontAwesomeIcon icon={faFolder} />
-              <span className={styles.item_text}>{folder.title}</span>
+              <InputEdit
+                value={folder.title}
+                onSave={async (value: string) => {
+                  folder.title = value;
+                  await updateFolder(folder);
+                }}
+              />
             </div>
           </summary>
           {childItems
@@ -152,22 +172,32 @@ export function Explorer(props: ExplorerProps) {
           id="file"
           key={"file" + file.id}
           onClick={() => {
-            setSelected(file, "file");
+            setSelected(fileItem);
             props.fileClickedHandler(file);
           }}
-          onContextMenu={() => setSelected(file, "file")}
+          onContextMenu={() => setSelected(fileItem)}
         >
           <div
             className={cx(
               styles.item,
+              styles.content,
               styles.indentation,
-              selectedId === "file" + file.id ? "selected" : "",
+              selectedItem?.type === "file" &&
+                fileItem.item.id === selectedItem?.item.id
+                ? "selected"
+                : "",
             )}
             /** @ts-expect-error poor typings */
             style={{ "--depth": depth }}
           >
             <FontAwesomeIcon icon={faFileLines} />
-            <span className={styles.item_text}>{file.title + file.id}</span>
+            <InputEdit
+              value={file.title}
+              onSave={async (value: string) => {
+                file.title = value;
+                await updateFile(file);
+              }}
+            />
           </div>
         </li>
       );

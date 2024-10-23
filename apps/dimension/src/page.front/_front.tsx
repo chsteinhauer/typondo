@@ -1,13 +1,14 @@
 import type { Folder, User, File } from "@prisma/client";
 import { useState } from "react";
 
-import AppWrapper from "../app.wrapper/app.wrapper";
+import type { UserWithRelations } from "../api/requests";
+import AppWrapper from "../app.wrapper/_app.wrapper";
 import { Editor } from "../page.editor/_editor";
 
 import * as styles from "./_front.style";
 
 export type FrontpageProps = {
-  user: User | null;
+  user: UserWithRelations | null;
   folders: Folder[];
   files: File[];
 };

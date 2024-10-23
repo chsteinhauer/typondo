@@ -23,3 +23,24 @@ export async function createFolderHandler(
     }),
   );
 }
+
+export async function updateFolderHandler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  const { body } = req;
+  const folder = await prisma.folder.update({
+    where: { id: body.id },
+    data: {
+      title: body.title,
+      folderId: body.folderId,
+    },
+  });
+
+  res.end(
+    JSON.stringify({
+      message: "ok",
+      folder,
+    }),
+  );
+}
