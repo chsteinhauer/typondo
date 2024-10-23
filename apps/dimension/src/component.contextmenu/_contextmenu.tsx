@@ -2,14 +2,13 @@ import * as styles from "./_contextmenu.styles";
 
 export type ContextMenuProps = {
   items: ContextMenuItem[];
-  params: unknown;
   top: number;
   left: number;
 };
 
 export type ContextMenuItem = {
   text: string;
-  clickHandler: (params: unknown) => void;
+  clickHandler: () => void;
 };
 
 export function ContextMenu(props: ContextMenuProps) {
@@ -25,7 +24,7 @@ export function ContextMenu(props: ContextMenuProps) {
           <li
             key={item.text}
             className={styles.option}
-            onClick={() => item.clickHandler(props.params)}
+            onClick={() => item.clickHandler()}
           >
             <span>{item.text}</span>
           </li>

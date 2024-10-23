@@ -3,12 +3,14 @@ import { cx } from "@linaria/core";
 import type { Folder, User, File } from "@prisma/client";
 import { useState } from "react";
 
+import type { UserWithRelations } from "../api/requests";
+
 import type { MenuItem } from "./_menu.static";
 import { items } from "./_menu.static";
 import * as styles from "./_menu.style";
 
 export type MenuProps = {
-  user: User | null;
+  user: UserWithRelations | null;
   folders: Folder[];
   files: File[];
   fileClickedHandler: (file: File) => void;
@@ -16,6 +18,8 @@ export type MenuProps = {
 
 export function Menu(props: MenuProps) {
   const [menuItem, setMenuItem] = useState<MenuItem | undefined>();
+
+  console.log(props.user);
 
   function generateMenuItems() {
     return (
@@ -49,11 +53,7 @@ export function Menu(props: MenuProps) {
             e.preventDefault();
           }}
         >
-          {menuItem.panel?.(
-            props.folders,
-            props.files,
-            props.fileClickedHandler,
-          )}
+          {menuItem.panel?.(props.user, props.fileClickedHandler)}
         </div>
       )}
     </div>

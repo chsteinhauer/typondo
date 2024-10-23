@@ -2,8 +2,9 @@ import { faFolder, faFileLines } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cx } from "@linaria/core";
 import type { Folder, File } from "@prisma/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import type { UserWithRelations } from "../api/requests";
 import type { ContextMenuItem } from "../component.contextmenu/_contextmenu";
 import { ContextMenu } from "../component.contextmenu/_contextmenu";
 import { useContextMenu } from "../component.contextmenu/_contextmenu.hooks";
@@ -11,41 +12,99 @@ import { useContextMenu } from "../component.contextmenu/_contextmenu.hooks";
 import * as styles from "./_explorer.styles";
 
 export type ExplorerProps = {
-  folders: Folder[];
-  files: File[];
+  user: UserWithRelations;
   fileClickedHandler: (file: File) => void;
 };
 
+type ExplorerItem = {
+  item: File | Folder;
+  type: string;
+  selected: boolean;
+  highlight: boolean;
+  edit: boolean;
+};
+
 export function Explorer(props: ExplorerProps) {
-  const { folders, files } = props;
   const { clicked, setClicked, coords, setCoords } = useContextMenu();
   const [selectedItem, setSelectedItem] = useState<File | Folder>();
   const [selectedId, setSelectedId] = useState<string>();
+  const [contextMenuItems, setContextMenuItems] = useState<ContextMenuItem[]>(
+    [],
+  );
+
+  const generateItems = (folders: Folder[], files: File[]): ExplorerItem[] => {
+    return [
+      ...folders.map((f) => {
+        return {
+          item: f,
+          type: "folder",
+          selected: false,
+          highlight: false,
+          edit: false,
+        };
+      }),
+      ...files.map((f) => {
+        return {
+          item: f,
+          type: "file",
+          selected: false,
+          highlight: false,
+          edit: false,
+        };
+      }),
+    ];
+  };
+
+  const expItems = generateItems(props.user?.folders, props.user?.files);
+
+  useEffect(() => {
+    const generalItems: ContextMenuItem[] = [
+      {
+        text: "Rename",
+        clickHandler: () => {
+          console.log("rename");
+        },
+      },
+      {
+        text: "Delete",
+        clickHandler: () => {
+          console.log("delete");
+        },
+      },
+    ];
+
+    if (selectedId?.includes("folder")) {
+      setContextMenuItems([
+        {
+          text: "New file",
+          clickHandler: () => {
+            console.log("new file");
+          },
+        },
+        {
+          text: "New folder",
+          clickHandler: () => {
+            console.log("new folder");
+          },
+        },
+        ...generalItems,
+      ]);
+    } else {
+      setContextMenuItems(generalItems);
+    }
+  }, [selectedId, selectedItem]);
 
   const setSelected = (item: File | Folder, type: string) => {
     setSelectedItem(item);
     setSelectedId(type + item.id);
   };
 
-  const contextMenuItems: ContextMenuItem[] = [
-    {
-      text: "New file",
-      clickHandler: (e) => {
-        console.log(e);
-      },
-    },
-    {
-      text: "New folder",
-      clickHandler: () => {
-        console.log("new folder!");
-      },
-    },
-  ];
+  const generateFolder = (folderItem: ExplorerItem, depth: number) => {
+    // const childFolders = folders.filter((f) => f.folderId === folder.id);
+    // const childFiles = files.filter((f) => f.folderId === folder.id);
 
-  const generateFolder = (folder: Folder, depth: number) => {
-    const childFolders = folders.filter((f) => f.folderId === folder.id);
-    const childFiles = files.filter((f) => f.folderId === folder.id);
-
+    const folder = folderItem.item;
+    const childItems = expItems.filter((e) => e.item.folderId === folder.id);
     return (
       <li key={"folder-item" + folder.id} id="folder">
         <details key={"folder-button" + folder.id}>
@@ -64,20 +123,29 @@ export function Explorer(props: ExplorerProps) {
               <span className={styles.item_text}>{folder.title}</span>
             </div>
           </summary>
-          {childFolders.map((f) => (
-            <ul key={"folder" + f.id}> {generateFolder(f, depth + 1)} </ul>
-          ))}
+          {childItems
+            .filter((e) => e.type === "folder")
+            .map((e) => (
+              <ul key={"folder" + e.item.id}>
+                {" "}
+                {generateFolder(e, depth + 1)}{" "}
+              </ul>
+            ))}
           <ul key={"files" + folder.id}>
             {" "}
-            {generateFiles(childFiles, depth + 1)}
+            {generateFiles(
+              childItems.filter((f) => f.type === "file"),
+              depth + 1,
+            )}
           </ul>
         </details>
       </li>
     );
   };
 
-  const generateFiles = (_files: File[], depth: number) => {
-    return _files.map((file) => {
+  const generateFiles = (fileItems: ExplorerItem[], depth: number) => {
+    return fileItems.map((fileItem) => {
+      const file = fileItem.item as File;
       return (
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
         <li
@@ -106,15 +174,11 @@ export function Explorer(props: ExplorerProps) {
     });
   };
 
-  // const generateFileTree = () => {
-  //   return <></>;
-  // };
   return (
     <div
       className={styles.wrapper}
       onContextMenu={(e) => {
         e.preventDefault();
-        console.log(e);
         // set our click state to true when a user right clicks
         setClicked(true);
 
@@ -127,39 +191,14 @@ export function Explorer(props: ExplorerProps) {
       )}
 
       <ul className={styles.tree}>
-        {folders
-          .filter((f) => f.folderId === null)
+        {expItems
+          .filter((e) => e.item.folderId === null && e.type === "folder")
           .map((folder) => generateFolder(folder, 1))}
         {generateFiles(
-          files.filter((f) => f.folderId === null),
+          expItems.filter((e) => e.item.folderId === null && e.type === "file"),
           1,
         )}
       </ul>
     </div>
   );
-}
-
-{
-  /* 
-   * <summary className={styles.item}>Giant planets</summary> 
-          <ul>
-            <li>
-              <details>
-                <summary className={styles.item}>Gas giants</summary>
-                <ul>
-                  <li className={styles.item}>Jupiter</li>
-                  <li className={styles.item}>Saturn</li>
-                </ul>
-              </details>
-            </li>
-            <li>
-              <details>
-                <summary className={styles.item}>Ice giants</summary>
-                <ul>
-                  <li className={styles.item}>Uranus</li>
-                  <li className={styles.item}>Neptune</li>
-                </ul>
-              </details>
-            </li>
-          </ul> */
 }

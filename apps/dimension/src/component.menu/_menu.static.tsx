@@ -4,7 +4,9 @@ import {
   faMagnifyingGlass,
   faNetworkWired,
 } from "@fortawesome/free-solid-svg-icons";
-import type { Folder, File } from "@prisma/client";
+import type { File } from "@prisma/client";
+
+import type { UserWithRelations } from "../api/requests";
 
 import { Explorer } from "./_explorer";
 
@@ -21,16 +23,9 @@ export const items: MenuItem[] = [
     icon: faFile,
     selected: false,
     panel: (
-      folders: Folder[],
-      files: File[],
+      user: UserWithRelations,
       fileClickedHandler: (file: File) => File,
-    ) => (
-      <Explorer
-        files={files}
-        folders={folders}
-        fileClickedHandler={fileClickedHandler}
-      />
-    ),
+    ) => <Explorer user={user} fileClickedHandler={fileClickedHandler} />,
   },
   {
     key: "Search",

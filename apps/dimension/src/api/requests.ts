@@ -1,4 +1,9 @@
-import type { File } from "@prisma/client";
+import type { File, Folder, User } from "@prisma/client";
+
+export type UserWithRelations = User & {
+  folders: Folder[];
+  files: File[];
+};
 
 const fetchData = async () => {
   // const res = await fetch("/api/user/1");
