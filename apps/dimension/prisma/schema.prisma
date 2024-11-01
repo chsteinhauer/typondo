@@ -8,6 +8,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  seed    = "prisma/seed.ts"
 }
 
 datasource db {
@@ -16,7 +17,7 @@ datasource db {
 }
 
 model User {
-  id      Int      @id @default(autoincrement())
+  id      String      @id @default(uuid())
   email   String   @unique
   name    String?
   files   File[]
@@ -24,21 +25,21 @@ model User {
 }
 
 model File {
-  id          Int     @id @default(autoincrement())
+  id          String     @id @default(uuid())
   title       String
   htmlContent String?
   author      User    @relation(fields: [authorId], references: [id])
-  authorId    Int
+  authorId    String
   folder      Folder? @relation(fields: [folderId], references: [id])
-  folderId    Int?
+  folderId    String?
 }
 
 model Folder {
-  id         Int      @id @default(autoincrement())
+  id         String      @id @default(uuid())
   title      String
   author     User     @relation(fields: [authorId], references: [id])
-  authorId   Int
-  folderId   Int?
+  authorId   String
+  folderId   String?
   folder     Folder?  @relation("Subfolders", fields: [folderId], references: [id])
   subfolders Folder[] @relation("Subfolders")
   files      File[]

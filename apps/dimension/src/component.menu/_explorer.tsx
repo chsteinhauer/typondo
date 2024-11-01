@@ -2,9 +2,11 @@ import { faFolder, faFileLines } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cx } from "@linaria/core";
 import type { Folder, File } from "@prisma/client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
+  createFile,
+  removeFile,
   updateFile,
   updateFolder,
   type UserWithRelations,
@@ -12,7 +14,7 @@ import {
 import type { ContextMenuItem } from "../component.contextmenu/_contextmenu";
 import { ContextMenu } from "../component.contextmenu/_contextmenu";
 import { useContextMenu } from "../component.contextmenu/_contextmenu.hooks";
-import { InputEdit } from "../component.editinput/_editinput";
+import { InputEdit } from "../component.inputedit/_inputedit";
 
 import * as styles from "./_explorer.styles";
 
@@ -25,8 +27,6 @@ type ExplorerItem = {
   item: File | Folder;
   type: string;
   selected: boolean;
-  highlight: boolean;
-  edit: boolean;
 };
 
 export function Explorer(props: ExplorerProps) {
@@ -35,16 +35,21 @@ export function Explorer(props: ExplorerProps) {
   const [contextMenuItems, setContextMenuItems] = useState<ContextMenuItem[]>(
     [],
   );
+  const [editableItemId, setEditableItemId] = useState<string>();
+  const [saveAsFunc, setSaveAsFunc] = useState<(value: string) => void>(() => {
+    console.log("tmp save func");
+  });
 
-  const generateItems = (folders: Folder[], files: File[]): ExplorerItem[] => {
-    return [
+  const [files, setFiles] = useState<File[]>(props.user.files);
+  const [folders, setFolders] = useState<Folder[]>(props.user.folders);
+
+  const explorerItems = useMemo(
+    () => [
       ...folders.map((f) => {
         return {
           item: f,
           type: "folder",
           selected: false,
-          highlight: false,
-          edit: false,
         };
       }),
       ...files.map((f) => {
@@ -52,51 +57,119 @@ export function Explorer(props: ExplorerProps) {
           item: f,
           type: "file",
           selected: false,
-          highlight: false,
-          edit: false,
         };
       }),
-    ];
-  };
+    ],
+    [files, folders],
+  );
 
-  const expItems = generateItems(props.user?.folders, props.user?.files);
+  //const expItems = generateItems(props.user?.folders, props.user?.files);
+  //setExplorerItems(expItems);
 
   useEffect(() => {
-    const generalItems: ContextMenuItem[] = [
+    const modifyItems: ContextMenuItem[] = [
       {
         text: "Rename",
         clickHandler: () => {
           console.log("rename");
+
+          const saveItem = async (value: string) => {
+            if (!selectedItem) return;
+
+            const item = selectedItem.item;
+
+            item.title = value;
+
+            if (selectedItem.type === "folder") {
+              await updateFolder(item as Folder);
+            } else {
+              await updateFile(item as File);
+            }
+
+            setEditableItemId(undefined);
+          };
+
+          setSaveAsFunc(() => saveItem);
+          setEditableItemId(selectedItem?.item.id);
         },
       },
       {
         text: "Delete",
-        clickHandler: () => {
+        clickHandler: async () => {
           console.log("delete");
+
+          const item = selectedItem?.item;
+
+          if (selectedItem?.type === "file") {
+            await removeFile(item as File);
+
+            setFiles((prev) => {
+              const next = [...prev];
+
+              const index = next.findIndex((f) => f.id === item?.id);
+              if (index > -1) {
+                next.splice(index, 1);
+              }
+
+              return next;
+            });
+          }
         },
       },
     ];
 
-    if (selectedItem?.type === "folder") {
-      setContextMenuItems([
-        {
-          text: "New file",
-          clickHandler: () => {
-            console.log("new file");
-          },
+    const createItems: ContextMenuItem[] = [
+      {
+        text: "New file",
+        clickHandler: async () => {
+          console.log("new file");
+
+          const tmpFile = {
+            //id: tmpID,
+            title: "",
+            folderId: selectedItem?.item.id,
+            authorId: props.user.id,
+            htmlContent: "",
+          };
+
+          const res = await createFile(tmpFile as File);
+
+          setFiles((prev) => [...prev, res.file]);
+
+          const saveFile = async (value: string) => {
+            res.file.title = value;
+            await updateFile(res.file);
+            setEditableItemId(undefined);
+          };
+
+          setSaveAsFunc(() => saveFile);
+          setEditableItemId(res.file.id);
+
+          //setSelectedItem(tmpFile);
         },
-        {
-          text: "New folder",
-          clickHandler: () => {
-            console.log("new folder");
-          },
+      },
+      {
+        text: "New folder",
+        clickHandler: () => {
+          console.log("new folder");
         },
-        ...generalItems,
-      ]);
+      },
+    ];
+
+    if (!selectedItem) {
+      setContextMenuItems(createItems);
+    } else if (selectedItem?.type === "folder") {
+      setContextMenuItems([...createItems, ...modifyItems]);
     } else {
-      setContextMenuItems(generalItems);
+      setContextMenuItems(modifyItems);
     }
-  }, [selectedItem]);
+  }, [
+    explorerItems,
+    props.user.files,
+    props.user.folders,
+    props.user.id,
+    selectedItem,
+  ]);
 
   const setSelected = (expItem: ExplorerItem) => {
     setSelectedItem((prev) => {
@@ -112,7 +185,9 @@ export function Explorer(props: ExplorerProps) {
     // const childFiles = files.filter((f) => f.folderId === folder.id);
 
     const folder = folderItem.item;
-    const childItems = expItems.filter((e) => e.item.folderId === folder.id);
+    const childItems = explorerItems.filter(
+      (e) => e.item.folderId === folder.id,
+    );
     return (
       <li key={"folder-item" + folder.id} id="folder">
         <details key={"folder-button" + folder.id}>
@@ -120,26 +195,22 @@ export function Explorer(props: ExplorerProps) {
           <summary
             className={cx(
               styles.item,
-              selectedItem?.type === "folder" &&
-                folderItem.item.id === selectedItem?.item.id
-                ? "selected"
-                : "",
+              folder.id === selectedItem?.item.id ? "selected" : "",
             )}
             onClick={() => setSelected(folderItem)}
             onContextMenu={() => setSelected(folderItem)}
           >
             <div
               className={cx(styles.indentation, styles.content)}
-              //{/** @ts-expect-error poor typings */}
+              // @ts-expect-error poor typings
               style={{ "--depth": depth }}
             >
               <FontAwesomeIcon icon={faFolder} />
               <InputEdit
+                key={folder.id}
                 value={folder.title}
-                onSave={async (value: string) => {
-                  folder.title = value;
-                  await updateFolder(folder);
-                }}
+                editMode={editableItemId === folder.id}
+                onSave={saveAsFunc}
               />
             </div>
           </summary>
@@ -182,10 +253,7 @@ export function Explorer(props: ExplorerProps) {
               styles.item,
               styles.content,
               styles.indentation,
-              selectedItem?.type === "file" &&
-                fileItem.item.id === selectedItem?.item.id
-                ? "selected"
-                : "",
+              fileItem.item.id === selectedItem?.item.id ? "selected" : "",
             )}
             /** @ts-expect-error poor typings */
             style={{ "--depth": depth }}
@@ -193,10 +261,8 @@ export function Explorer(props: ExplorerProps) {
             <FontAwesomeIcon icon={faFileLines} />
             <InputEdit
               value={file.title}
-              onSave={async (value: string) => {
-                file.title = value;
-                await updateFile(file);
-              }}
+              editMode={editableItemId === file.id}
+              onSave={saveAsFunc}
             />
           </div>
         </li>
@@ -221,11 +287,13 @@ export function Explorer(props: ExplorerProps) {
       )}
 
       <ul className={styles.tree}>
-        {expItems
+        {explorerItems
           .filter((e) => e.item.folderId === null && e.type === "folder")
           .map((folder) => generateFolder(folder, 1))}
         {generateFiles(
-          expItems.filter((e) => e.item.folderId === null && e.type === "file"),
+          explorerItems.filter(
+            (e) => e.item.folderId === null && e.type === "file",
+          ),
           1,
         )}
       </ul>

@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cx } from "@linaria/core";
-import type { Folder, User, File } from "@prisma/client";
+import type { File } from "@prisma/client";
 import { useState } from "react";
 
 import type { UserWithRelations } from "../api/requests";
@@ -11,15 +11,11 @@ import * as styles from "./_menu.style";
 
 export type MenuProps = {
   user: UserWithRelations | null;
-  folders: Folder[];
-  files: File[];
   fileClickedHandler: (file: File) => void;
 };
 
 export function Menu(props: MenuProps) {
   const [menuItem, setMenuItem] = useState<MenuItem | undefined>();
-
-  console.log(props.user);
 
   function generateMenuItems() {
     return (

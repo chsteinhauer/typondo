@@ -10,23 +10,26 @@ export async function getFrontpageServerSideProps(
 ): Promise<GetServerSidePropsResult<FrontpageProps>> {
   console.log(context);
 
-  const user = await prisma.user.findUnique({
-    where: { id: 2 },
+  // const user = await prisma.user.findUnique({
+  //   where: { id: "2" },
+  //   include: {
+  //     folders: true,
+  //     files: true,
+  //   },
+  // });
+
+  const user = await prisma.user.findFirst({
     include: {
       folders: true,
       files: true,
     },
   });
-  const folders = await prisma.folder.findMany({
-    where: { authorId: user?.id },
-  });
-  const files = await prisma.file.findMany({ where: { authorId: user?.id } });
+
+  console.log(user);
 
   return {
     props: {
       user,
-      folders,
-      files,
     },
   };
 }

@@ -1,4 +1,4 @@
-import type { Folder, User, File } from "@prisma/client";
+import type { File } from "@prisma/client";
 import { useState } from "react";
 
 import type { UserWithRelations } from "../api/requests";
@@ -9,8 +9,6 @@ import * as styles from "./_front.style";
 
 export type FrontpageProps = {
   user: UserWithRelations | null;
-  folders: Folder[];
-  files: File[];
 };
 
 export function Frontpage(props: FrontpageProps) {
@@ -28,8 +26,6 @@ export function Frontpage(props: FrontpageProps) {
   return (
     <AppWrapper
       menu={{
-        files: props.files,
-        folders: props.folders,
         user: props.user,
         fileClickedHandler,
       }}

@@ -51,13 +51,29 @@ export async function getFileHandler(
   res: NextApiResponse,
 ) {
   const file = await prisma.file.findUnique({
-    where: { id: Number(req.query?.["id"]) },
+    where: { id: String(req.query?.["id"]) },
   });
 
   res.end(
     JSON.stringify({
       message: "ok",
       file,
+    }),
+  );
+}
+
+export async function removeFileHandler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  const { body } = req;
+  await prisma.file.delete({
+    where: { id: body.id },
+  });
+
+  res.end(
+    JSON.stringify({
+      message: "ok",
     }),
   );
 }
