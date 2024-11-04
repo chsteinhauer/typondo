@@ -25,7 +25,10 @@ export async function getFrontpageServerSideProps(
     },
   });
 
-  console.log(user);
+  if (user) {
+    const sorted = user.files.sort((a, b) => a.title.localeCompare(b.title));
+    user.files = sorted;
+  }
 
   return {
     props: {

@@ -14,6 +14,8 @@ export const panel = css`
   height: 100%;
   width: 250px;
 
+  border-right: 1px solid var(--secondary-color-dark);
+
   color: var(--secondary-color-light);
 `;
 

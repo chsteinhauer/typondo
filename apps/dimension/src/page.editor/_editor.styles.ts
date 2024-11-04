@@ -13,14 +13,15 @@ export const editor_toolbar = css`
 `;
 
 export const editor_canvas = css`
-  height: 297mm;
-  width: 210mm;
   margin: 24px auto;
 
-  cursor: text;
+  height: 297mm;
+  width: 210mm;
 
   background-color: white;
   border: 1px solid lightgray;
+
+  cursor: text;
 `;
 
 export const editor_content = css`

@@ -1,6 +1,7 @@
 import { css } from "@linaria/core";
 
 export const wrapper = css`
+  padding-top: 25px;
   height: 100%;
 `;
 
