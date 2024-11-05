@@ -1,3 +1,3 @@
-export { getFrontpageServerSideProps as getServerSideProps } from "../src/page.front/_get-props";
+export { getFrontpageServerSideProps as getServerSideProps } from "../src/page.main/_get-props";
 
-export { Frontpage as default } from "../src/page.front/_front";
+export { Main as default } from "../src/page.main/_main";

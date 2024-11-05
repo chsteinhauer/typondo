@@ -12,8 +12,19 @@ export const tab_group_wrapper = css`
   flex-direction: row;
 `;
 
-export const tab_wrapper = css`
-  max-width: 200px;
+export const tab = css`
+  position: relative;
+`;
+
+export const tab_card = css`
+  padding: 0;
+
+  max-width: 175px;
+  height: 100%;
+
+  background-color: var(--primary-color);
+  border: 1px solid transparent;
+  border-right: 1px solid var(--secondary-color-dark);
 
   display: flex;
   flex-direction: row;
@@ -24,14 +35,6 @@ export const tab_wrapper = css`
   color: var(--secondary-color);
 
   cursor: pointer;
-
-  &:hover {
-    background-color: var(--primary-color-light);
-
-    button {
-      color: var(--secondary-color-light);
-    }
-  }
 `;
 
 export const tab_icon = css`
@@ -39,6 +42,7 @@ export const tab_icon = css`
 `;
 
 export const tab_text = css`
+  margin-right: 32px;
   padding-left: 7px;
 
   overflow: hidden;
@@ -47,7 +51,10 @@ export const tab_text = css`
 `;
 
 export const tab_button = css`
-  margin: 0 3px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 100;
 
   height: 24px;
   width: 24px;
@@ -56,11 +63,30 @@ export const tab_button = css`
   border: none;
   border-radius: 5px;
 
-  color: transparent;
+  color: var(--secondary-color-light);
 
   cursor: pointer;
 
+  opacity: 0;
+
   &:hover {
-    background-color: var(--secondary-color-dark);
+    background-color: var(--primary-color-light);
+  }
+
+  .${tab}:hover &,
+  &:focus-visible {
+    opacity: 1;
+  }
+`;
+
+export const tab_selected = css`
+  background-color: var(--background-color);
+  border-top: 2px solid var(--complementary-color-light);
+  border-radius: 2px 2px 0 0;
+
+  color: var(--primary-color-light);
+
+  &:hover {
+    background-color: var(--background-color);
   }
 `;

@@ -2,18 +2,18 @@ import type { File } from "@prisma/client";
 import { useState } from "react";
 
 import type { UserWithRelations } from "../api/requests";
-import AppWrapper from "../app.wrapper/_app.wrapper";
+import { Menu } from "../component.menu/_menu";
 import { Tab } from "../component.tab/_tab";
 import TabWrapper from "../component.tab/_tab.wrapper";
 import { Editor } from "../page.editor/_editor";
 
-import * as styles from "./_front.style";
+import * as styles from "./_main.style";
 
-export type FrontpageProps = {
+export type MainProps = {
   user: UserWithRelations | null;
 };
 
-export function Frontpage(props: FrontpageProps) {
+export function Main(props: MainProps) {
   const [openFiles, setOpenFiles] = useState<File[]>([]);
   const [selectedFile, setSelectedFile] = useState<File>();
 
@@ -41,20 +41,19 @@ export function Frontpage(props: FrontpageProps) {
   };
 
   return (
-    <AppWrapper
-      menu={{
-        user: props.user,
-        fileClickedHandler,
-      }}
-    >
-      <div className={styles.front_wrapper}>
+    <div className={styles.main_wrapper}>
+      <div className={styles.main_menu}>
+        <Menu user={props.user} fileClickedHandler={fileClickedHandler} />
+      </div>
+      <div className={styles.main_content}>
         {openFiles.length > 0 && (
-          <div className={styles.front_tab_wrapper}>
+          <div className={styles.main_tab_wrapper}>
             <TabWrapper>
               {openFiles.map((f) => (
                 <Tab
                   key={f.id}
                   file={f}
+                  selected={f.id === selectedFile?.id}
                   closeTabClickedHandler={closeTabClickedHandler}
                   fileClickedHandler={fileClickedHandler}
                 />
@@ -62,10 +61,10 @@ export function Frontpage(props: FrontpageProps) {
             </TabWrapper>
           </div>
         )}
-        <div className={styles.front_panel}>
+        <div className={styles.main_panel}>
           {selectedFile && <Editor key={selectedFile.id} file={selectedFile} />}
         </div>
       </div>
-    </AppWrapper>
+    </div>
   );
 }

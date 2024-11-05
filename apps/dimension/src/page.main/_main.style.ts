@@ -2,16 +2,34 @@ import { css } from "@linaria/core";
 
 export const crossfadeDurationMs = 150;
 
-export const front_wrapper = css`
+export const main_wrapper = css`
   position: relative;
+
+  height: 100%;
+  width: 100%;
+
   overflow: hidden;
+
+  display: flex;
+  flex-direction: row;
 `;
 
-export const front_panel = css``;
+export const main_menu = css``;
 
-export const front_tab_wrapper = css`
+export const main_content = css`
+  position: relative;
+
+  height: 100%;
+  width: 100%;
+
+  overflow-y: scroll;
+`;
+
+export const main_panel = css``;
+
+export const main_tab_wrapper = css`
   position: fixed;
-  z-index: 1000;
+  z-index: 1;
 
   width: 100%;
 `;

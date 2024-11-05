@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
-import type { FrontpageProps } from "./_front";
+import type { FrontpageProps } from "./_main";
 
 const prisma = new PrismaClient();
 
