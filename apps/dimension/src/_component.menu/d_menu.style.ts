@@ -1,20 +1,13 @@
 import { css } from "@linaria/core";
-//import "../global.style.js";
+import "../global.style.js";
 
-export const menu_wrapper = css`
+export const wrapper = css`
   height: 100%;
 
   background-color: var(--primary-color);
 
   display: flex;
   flex-direction: row;
-`;
-
-export const menu = css`
-  border-right: 1px solid var(--secondary-color-dark);
-
-  display: flex;
-  flex-direction: column;
 `;
 
 export const panel = css`
@@ -24,6 +17,13 @@ export const panel = css`
   border-right: 1px solid var(--secondary-color-dark);
 
   color: var(--secondary-color-light);
+`;
+
+export const menu = css`
+  border-right: 1px solid var(--secondary-color-dark);
+
+  display: flex;
+  flex-direction: column;
 `;
 
 export const item = css`

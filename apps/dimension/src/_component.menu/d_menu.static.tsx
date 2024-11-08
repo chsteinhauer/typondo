@@ -5,34 +5,27 @@ import {
   faNetworkWired,
 } from "@fortawesome/free-solid-svg-icons";
 import type { File } from "@prisma/client";
-import type { ReactNode } from "react";
 
 import type { UserWithRelations } from "../api/requests";
-import { Explorer } from "../component.explorer/_explorer";
+
+import { Explorer } from "./d_explorer";
 
 export type MenuItem = {
   key: string;
   icon: IconProp;
   selected: boolean;
-  panel?: (props) => ReactNode;
+  panel?: any;
 };
 
-export const menuItems: MenuItem[] = [
+export const items: MenuItem[] = [
   {
     key: "Explorer",
     icon: faFile,
     selected: false,
-    panel: (props: {
-      user: UserWithRelations;
-      fileClickedHandler: (file: File) => File;
-      selectedId?: string;
-    }) => (
-      <Explorer
-        user={props.user}
-        fileClickedHandler={props.fileClickedHandler}
-        selectedId={props.selectedId}
-      />
-    ),
+    panel: (
+      user: UserWithRelations,
+      fileClickedHandler: (file: File) => File,
+    ) => <Explorer user={user} fileClickedHandler={fileClickedHandler} />,
   },
   {
     key: "Search",

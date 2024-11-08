@@ -16,7 +16,7 @@ import { ContextMenu } from "../component.contextmenu/_contextmenu";
 import { useContextMenu } from "../component.contextmenu/_contextmenu.hooks";
 import { InputEdit } from "../component.inputedit/_inputedit";
 
-import * as styles from "./_explorer.styles";
+import * as styles from "./d_explorer.styles";
 
 export type ExplorerProps = {
   user: UserWithRelations;

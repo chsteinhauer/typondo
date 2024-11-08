@@ -70,11 +70,12 @@ export const tab_button = css`
   opacity: 0;
 
   &:hover {
-    background-color: var(--primary-color-light);
+    background-color: rgba(0 0 0 / 0.1);
   }
 
   .${tab}:hover &,
   &:focus-visible {
+    color: var(--secondary-color-dark);
     opacity: 1;
   }
 `;

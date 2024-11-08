@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
-import type { MenuProps } from "../component.menu/_menu";
-import { Menu } from "../component.menu/_menu";
+import type { MenuProps } from "../_component.menu/d_menu";
+import { Menu } from "../_component.menu/d_menu";
 import * as styles from "../global.style";
 
 type Props = {

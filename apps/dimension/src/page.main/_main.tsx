@@ -43,7 +43,11 @@ export function Main(props: MainProps) {
   return (
     <div className={styles.main_wrapper}>
       <div className={styles.main_menu}>
-        <Menu user={props.user} fileClickedHandler={fileClickedHandler} />
+        <Menu
+          user={props.user}
+          fileClickedHandler={fileClickedHandler}
+          selectedId={selectedFile?.id}
+        />
       </div>
       <div className={styles.main_content}>
         {openFiles.length > 0 && (
