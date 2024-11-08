@@ -15,8 +15,10 @@ export const explorer_tree_view = css`
 `;
 
 export const explorer_tree_node = css`
-  padding-block: 3px;
-  padding-left: 20px;
+  position: relative;
+
+  margin: 0;
+  padding-block: 1px;
 
   border: 1px solid transparent;
 
@@ -32,7 +34,36 @@ export const explorer_tree_node = css`
   }
 `;
 
-export const explorer_toggle_icon = css``;
+export const explorer_toggle_icon = css`
+  position: absolute;
+`;
+
+export const explorer_tree_node_icon = css`
+  svg {
+    height: 14px;
+    width: 14px;
+
+    display: block;
+  }
+`;
+
+export const explorer_tree_node_button = css`
+  margin: 0;
+  padding-left: 25px;
+
+  width: 100%;
+
+  background-color: transparent;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  text-align: left;
+
+  color: var(--secondary-color-light);
+
+  cursor: pointer;
+`;
 
 export const explorer_title = css`
   padding-left: 7px;

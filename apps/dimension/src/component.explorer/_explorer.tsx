@@ -1,9 +1,7 @@
 import type { Folder, File } from "@prisma/client";
-import type { ReactNode } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import type { UserWithRelations } from "../api/requests";
-import type { ContextMenuItem } from "../component.contextmenu/_contextmenu";
 import { ContextMenu } from "../component.contextmenu/_contextmenu";
 import { useContextMenu } from "../component.contextmenu/_contextmenu.hooks";
 

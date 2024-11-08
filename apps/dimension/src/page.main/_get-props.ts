@@ -1,13 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
-import type { FrontpageProps } from "./_main";
+import type { MainProps } from "./_main";
 
 const prisma = new PrismaClient();
 
 export async function getFrontpageServerSideProps(
   context: GetServerSidePropsContext,
-): Promise<GetServerSidePropsResult<FrontpageProps>> {
+): Promise<GetServerSidePropsResult<MainProps>> {
   console.log(context);
 
   // const user = await prisma.user.findUnique({

@@ -62,13 +62,11 @@ const TreeNode = (props: TreeNodeProps) => {
   };
 
   return (
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
     <li
       className={cx(
         styles.explorer_tree_node,
         props.node.id === props.selectedId ? "selected" : "",
       )}
-      onClick={fileClickedHandler}
     >
       {props.node.children && (
         <button onClick={toggleNode} className={styles.explorer_toggle_icon}>
@@ -79,15 +77,23 @@ const TreeNode = (props: TreeNodeProps) => {
           )}
         </button>
       )}
-      {renderIcon(props.node)}
-      <span className={styles.explorer_title}>{props.node.name}</span>
-      {isOpen && (
-        <TreeView
-          data={props.node?.children}
-          selectedId={selectedId}
-          fileClickedHandler={props.fileClickedHandler}
-        />
-      )}
+
+      <button
+        className={styles.explorer_tree_node_button}
+        onClick={fileClickedHandler}
+      >
+        <span className={styles.explorer_tree_node_icon}>
+          {renderIcon(props.node)}
+        </span>
+        <span className={styles.explorer_title}>{props.node.name}</span>
+        {isOpen && (
+          <TreeView
+            data={props.node?.children}
+            selectedId={selectedId}
+            fileClickedHandler={props.fileClickedHandler}
+          />
+        )}
+      </button>
     </li>
   );
 };

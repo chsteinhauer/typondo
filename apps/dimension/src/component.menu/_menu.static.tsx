@@ -1,6 +1,7 @@
 import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faFile } from "@fortawesome/free-regular-svg-icons";
 import {
+  faGear,
   faMagnifyingGlass,
   faNetworkWired,
 } from "@fortawesome/free-solid-svg-icons";
@@ -45,3 +46,9 @@ export const menuItems: MenuItem[] = [
     selected: false,
   },
 ];
+
+export const settingsItem: MenuItem = {
+  key: "Settings",
+  icon: faGear,
+  selected: false,
+};

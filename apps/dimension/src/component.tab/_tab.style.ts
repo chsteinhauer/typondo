@@ -35,6 +35,11 @@ export const tab_card = css`
   color: var(--secondary-color);
 
   cursor: pointer;
+
+  svg {
+    height: 14px;
+    width: 14px;
+  }
 `;
 
 export const tab_icon = css`
@@ -83,7 +88,6 @@ export const tab_button = css`
 export const tab_selected = css`
   background-color: var(--background-color);
   border-top: 2px solid var(--complementary-color-light);
-  border-radius: 2px 2px 0 0;
 
   color: var(--primary-color-light);
 

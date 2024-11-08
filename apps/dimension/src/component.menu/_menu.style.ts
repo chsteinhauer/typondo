@@ -17,6 +17,26 @@ export const menu = css`
   flex-direction: column;
 `;
 
+export const menu_logo = css`
+  padding: 14px 0;
+
+  img {
+    margin: auto;
+
+    height: 36px;
+    width: 36px;
+
+    display: block;
+
+    opacity: 0.5;
+  }
+`;
+
+export const menu_settings = css`
+  margin-top: auto;
+  margin-bottom: 3px;
+`;
+
 export const panel = css`
   height: 100%;
   width: 250px;
