@@ -1,14 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cx } from "@linaria/core";
-import type { File } from "@prisma/client";
 
-import type { MenuItem } from "./_menu.static";
+import type { MenuLinkProps } from "./_menu.interfaces";
 import * as styles from "./_menu.style";
-
-export type MenuLinkProps = {
-  item: MenuItem;
-  menuLinkClickedHandler: (file: File) => void;
-};
 
 export function MenuLink(props: MenuLinkProps) {
   const { item } = props;

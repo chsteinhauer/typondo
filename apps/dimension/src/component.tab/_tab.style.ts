@@ -16,45 +16,6 @@ export const tab = css`
   position: relative;
 `;
 
-export const tab_card = css`
-  padding: 0;
-
-  max-width: 175px;
-  height: 100%;
-
-  background-color: var(--primary-color);
-  border: 1px solid transparent;
-  border-right: 1px solid var(--secondary-color-dark);
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-
-  font-size: 14px;
-  color: var(--secondary-color);
-
-  cursor: pointer;
-
-  svg {
-    height: 14px;
-    width: 14px;
-  }
-`;
-
-export const tab_icon = css`
-  padding-left: 14px;
-`;
-
-export const tab_text = css`
-  margin-right: 36px;
-  padding-left: 7px;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
 export const tab_button = css`
   position: absolute;
   top: 5px;
@@ -94,11 +55,55 @@ export const tab_button = css`
   }
 `;
 
+export const tab_card = css`
+  padding: 0;
+
+  max-width: 175px;
+  height: 100%;
+
+  background-color: var(--primary-color);
+  border: 1px solid transparent;
+  border-right: 1px solid var(--secondary-color-dark);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 14px;
+  color: var(--secondary-color);
+
+  cursor: pointer;
+
+  &:hover,
+  .${tab_button}:hover {
+    background-color: var(--primary-color-light);
+  }
+
+  svg {
+    height: 14px;
+    width: 14px;
+  }
+`;
+
+export const tab_icon = css`
+  padding-left: 14px;
+`;
+
+export const tab_text = css`
+  margin-right: 36px;
+  padding-left: 7px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
 export const tab_selected = css`
   background-color: var(--background-color);
   border-top: 2px solid var(--complementary-color-light);
 
-  color: var(--primary-color-light);
+  color: var(--background-text-color);
 
   &:hover {
     background-color: var(--background-color);

@@ -8,6 +8,8 @@ export const main_wrapper = css`
   height: 100%;
   width: 100%;
 
+  background-color: var(--background-color);
+
   overflow: hidden;
 
   display: flex;

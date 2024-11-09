@@ -1,10 +1,13 @@
-import type { Folder, File } from "@prisma/client";
+import {
+  faFileCirclePlus,
+  faFolderPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMemo, useState } from "react";
 
 import { ContextMenu } from "../component.contextmenu/_contextmenu";
 import { useContextMenu } from "../component.contextmenu/_contextmenu.hooks";
 import type { Item } from "../page.main/_main.interfaces";
-import { ItemType } from "../page.main/_main.interfaces";
 
 import type { ExplorerProps, TreeNode } from "./_explorer.interfaces";
 import * as styles from "./_explorer.styles";
@@ -14,6 +17,7 @@ export function Explorer(props: ExplorerProps) {
   const { clicked, setClicked, coords, setCoords } = useContextMenu();
 
   const [items, setItems] = useState<Item[]>(props.items);
+  const [editableId, setEditableId] = useState<string>();
 
   const data = useMemo(() => {
     const genTreeData = (item: Item): TreeNode => {
@@ -34,8 +38,6 @@ export function Explorer(props: ExplorerProps) {
     return [...root.map((i) => genTreeData(i))];
   }, [items]);
 
-  console.log(data);
-
   return (
     <div
       className={styles.explorer_wrapper}
@@ -49,7 +51,15 @@ export function Explorer(props: ExplorerProps) {
       }}
     >
       {clicked && <ContextMenu top={coords.y} left={coords.x} items={[]} />}
+      <div className={styles.explorer_add_button_wrapper}>
+        <button className={styles.explorer_add_button}>
+          <FontAwesomeIcon icon={faFileCirclePlus} />
+        </button>
 
+        <button className={styles.explorer_add_button}>
+          <FontAwesomeIcon icon={faFolderPlus} />
+        </button>
+      </div>
       <TreeView
         data={data}
         selectedId={props.selectedId}

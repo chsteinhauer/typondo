@@ -1,5 +1,6 @@
 import { faFile } from "@fortawesome/free-regular-svg-icons";
 import {
+  faFolderTree,
   faGear,
   faMagnifyingGlass,
   faNetworkWired,
@@ -13,7 +14,7 @@ import type { MenuItem } from "./_menu.interfaces";
 export const menuItems: MenuItem[] = [
   {
     key: "Explorer",
-    icon: faFile,
+    icon: faFolderTree,
     panel: (props: {
       items: Item[];
       itemClickedHandler: (item: Item) => void;

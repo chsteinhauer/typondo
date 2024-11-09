@@ -96,7 +96,7 @@ const TreeNode = (props: TreeNodeProps) => {
         </span>
         {isOpen && (
           <TreeView
-            data={props.node?.children}
+            data={props.node.children}
             selectedId={selectedId}
             itemClickedHandler={props.itemClickedHandler}
           />

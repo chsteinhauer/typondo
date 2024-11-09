@@ -12,5 +12,11 @@ export type MenuProps = {
 export type MenuItem = {
   key: string;
   icon: IconProp;
-  panel?: (props) => ReactNode;
+  selected?: boolean;
+  panel?: (props: Record<string, unknown>) => ReactNode;
+};
+
+export type MenuLinkProps = {
+  item: MenuItem;
+  menuLinkClickedHandler: (item: MenuItem) => void;
 };

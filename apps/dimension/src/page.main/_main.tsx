@@ -15,13 +15,15 @@ export function Main(props: MainProps) {
   const [focusItem, setFocusItem] = useState<Item>();
   const [items, setItems] = useState<Item[]>([]);
 
+  // temporary
   useEffect(() => {
-    //const { folders, files } = props.user;
+    document.documentElement.classList.toggle("dark-mode", true);
+  }, []);
 
+  useEffect(() => {
     if (!props.user) return;
 
-    const folders = props.user.folders;
-    const files = props.user.files;
+    const { folders, files } = props.user;
 
     setItems([
       ...folders.map((folder: Folder) => {

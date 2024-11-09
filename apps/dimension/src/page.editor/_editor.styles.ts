@@ -18,14 +18,15 @@ export const editor_canvas = css`
   height: 297mm;
   width: 210mm;
 
-  background-color: white;
-  border: 1px solid lightgray;
+  background-color: var(--editor-page-color);
+  border: 1px solid var(--editor-page-border);
 
   cursor: text;
 `;
 
 export const editor_content = css`
   margin: 96px;
+  color: var(--editor-text-color);
 
   .ProseMirror:focus {
     outline: none;

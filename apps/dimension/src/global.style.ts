@@ -10,10 +10,32 @@ css`
       --secondary-color-dark: #447784;
       --secondary-color: #6b949e;
       --secondary-color-light: #a9c4ca;
-      --background-color: #e8e8e8;
       --complementary-color: #4f1b0f;
       --complementary-color-light: #b43e22;
       --complementary-color-light-trans: #b43e2252;
+
+      /* light mode default */
+      --background-color: #e8e8e8;
+      --background-text-color: var(--primary-color-light);
+      --editor-page-color: #ffff;
+      --editor-page-border: #d3d3d3;
+      --editor-text-color: #000;
+
+      /* @media (prefers-color-scheme: light) {
+        --background-color: #e8e8e8;
+        --editor-page-color: #ffff;
+        --editor-page-border: #d3d3d3;
+        --editor-text-color: #000;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        --background-color: #1f1f1f;
+        --editor-page-color: #313335;
+        --editor-page-border: #565656;
+        --editor-text-color: #fff;
+      } */
+
+      /* dark mode */
     }
 
     #__next,
@@ -25,6 +47,14 @@ css`
 
       -webkit-font-smoothing: antialiased;
       font-family: Arial;
+    }
+
+    .dark-mode {
+      --background-color: #1f1f1f;
+      --background-text-color: var(--secondary-color-light);
+      --editor-page-color: #313335;
+      --editor-page-border: #565656;
+      --editor-text-color: #fff;
     }
   }
 `;

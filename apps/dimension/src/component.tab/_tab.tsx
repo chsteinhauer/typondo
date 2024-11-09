@@ -2,16 +2,8 @@ import { faFileLines, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cx } from "@linaria/core";
 
-import type { Item } from "../page.main/_main.interfaces";
-
+import type { TabProps } from "./_tab.interfaces";
 import * as styles from "./_tab.style";
-
-type TabProps = {
-  item: Item;
-  selected: boolean;
-  closeTabClickedHandler: (item: Item) => void;
-  itemClickedHandler: (item: Item) => void;
-};
 
 export function Tab(props: TabProps) {
   const closeTabClickedHandler = () => {
