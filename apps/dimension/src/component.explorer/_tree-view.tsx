@@ -6,36 +6,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cx } from "@linaria/core";
-import type { Folder, File } from "@prisma/client";
 import type { ReactNode } from "react";
 import React, { useEffect, useState } from "react";
 
+import { InputEdit } from "../component.inputedit/_inputedit";
+import { ItemType } from "../page.main/_main.interfaces";
+
+import type {
+  TreeNodeProps,
+  TreeNode,
+  TreeViewProps,
+} from "./_explorer.interfaces";
 import * as styles from "./_explorer.styles";
-
-export enum TreeNodeType {
-  FOLDER,
-  FILE,
-}
-
-export type TreeNode = {
-  id: string;
-  name: string;
-  item: File | Folder;
-  type: TreeNodeType;
-  children?: TreeNode[];
-};
-
-type TreeViewProps = {
-  data: TreeNode[] | undefined;
-  fileClickedHandler: (file: File) => void;
-  selectedId?: string;
-};
-
-type TreeNodeProps = {
-  node: TreeNode;
-  fileClickedHandler: (file: File) => void;
-  selectedId?: string;
-};
 
 const TreeNode = (props: TreeNodeProps) => {
   const [selectedId, setSelectedId] = useState<string | undefined>(
@@ -47,19 +29,37 @@ const TreeNode = (props: TreeNodeProps) => {
   useEffect(() => setSelectedId(props.selectedId), [props.selectedId]);
 
   const renderIcon = (node: TreeNode): ReactNode => {
-    switch (node.type) {
-      case TreeNodeType.FOLDER:
+    switch (node.item.type) {
+      case ItemType.FOLDER:
         return <FontAwesomeIcon icon={faFolder} />;
-      case TreeNodeType.FILE:
+      case ItemType.FILE:
         return <FontAwesomeIcon icon={faFileLines} />;
       default:
         break;
     }
   };
 
-  const fileClickedHandler = () => {
-    props.fileClickedHandler(props.node.item as File);
+  const itemClickedHandler = () => {
+    props.itemClickedHandler(props.node.item);
   };
+
+  // const saveAsHandler = async (value: string) => {
+  //   if (!selectedId) return;
+
+  //   if (selectedItem.type === "folder") {
+  //     const item = selectedItem.item;
+
+  //     item.title = value;
+  //     await updateFolder(item as Folder);
+  //   } else {
+  //     const item = selectedItem.item;
+
+  //     item.title = value;
+  //     await updateFile(item as File);
+  //   }
+
+  //   setEditableItemId(undefined);
+  // };
 
   return (
     <li
@@ -68,7 +68,7 @@ const TreeNode = (props: TreeNodeProps) => {
         props.node.id === props.selectedId ? "selected" : "",
       )}
     >
-      {props.node.children && (
+      {props.node.item.type === ItemType.FOLDER && (
         <button onClick={toggleNode} className={styles.explorer_toggle_icon}>
           {isOpen ? (
             <FontAwesomeIcon icon={faChevronDown} />
@@ -80,17 +80,25 @@ const TreeNode = (props: TreeNodeProps) => {
 
       <button
         className={styles.explorer_tree_node_button}
-        onClick={fileClickedHandler}
+        onClick={itemClickedHandler}
       >
         <span className={styles.explorer_tree_node_icon}>
           {renderIcon(props.node)}
         </span>
-        <span className={styles.explorer_title}>{props.node.name}</span>
+        <span className={styles.explorer_title}>
+          {props.node.name}
+          {/* <InputEdit
+            key={props.node.id}
+            value={props.node.name}
+            editMode={editableItemId === props.node.id}
+            onSave={saveAsFunc}
+          /> */}
+        </span>
         {isOpen && (
           <TreeView
             data={props.node?.children}
             selectedId={selectedId}
-            fileClickedHandler={props.fileClickedHandler}
+            itemClickedHandler={props.itemClickedHandler}
           />
         )}
       </button>
@@ -106,7 +114,7 @@ const TreeView = (props: TreeViewProps) => {
           key={node.id}
           node={node}
           selectedId={props.selectedId}
-          fileClickedHandler={props.fileClickedHandler}
+          itemClickedHandler={props.itemClickedHandler}
         />
       ))}
     </ul>

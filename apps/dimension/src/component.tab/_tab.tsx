@@ -1,24 +1,25 @@
 import { faFileLines, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cx } from "@linaria/core";
-import type { File } from "@prisma/client";
+
+import type { Item } from "../page.main/_main.interfaces";
 
 import * as styles from "./_tab.style";
 
 type TabProps = {
-  file: File;
+  item: Item;
   selected: boolean;
-  closeTabClickedHandler: (file: File) => void;
-  fileClickedHandler: (file: File) => void;
+  closeTabClickedHandler: (item: Item) => void;
+  itemClickedHandler: (item: Item) => void;
 };
 
 export function Tab(props: TabProps) {
   const closeTabClickedHandler = () => {
-    props.closeTabClickedHandler(props.file);
+    props.closeTabClickedHandler(props.item);
   };
 
-  const fileClickedHandler = () => {
-    props.fileClickedHandler(props.file);
+  const itemClickedHandler = () => {
+    props.itemClickedHandler(props.item);
   };
 
   return (
@@ -28,10 +29,10 @@ export function Tab(props: TabProps) {
           styles.tab_card,
           props.selected ? styles.tab_selected : "",
         )}
-        onClick={fileClickedHandler}
+        onClick={itemClickedHandler}
       >
         <FontAwesomeIcon className={styles.tab_icon} icon={faFileLines} />
-        <span className={styles.tab_text}>{props.file.title}</span>
+        <span className={styles.tab_text}>{props.item.item.title}</span>
       </button>
 
       <button className={styles.tab_button} onClick={closeTabClickedHandler}>

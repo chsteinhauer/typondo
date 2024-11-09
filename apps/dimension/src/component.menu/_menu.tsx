@@ -1,19 +1,10 @@
-import type { File } from "@prisma/client";
 import { useState } from "react";
 
-import logo from "../../public/logo-white.png";
-import type { UserWithRelations } from "../api/requests";
-
 import { MenuLink } from "./_menu-link";
+import type { MenuProps } from "./_menu.interfaces";
 import type { MenuItem } from "./_menu.static";
 import { menuItems, settingsItem } from "./_menu.static";
 import * as styles from "./_menu.style";
-
-export type MenuProps = {
-  user: UserWithRelations | null;
-  fileClickedHandler: (file: File) => void;
-  selectedId?: string;
-};
 
 export function Menu(props: MenuProps) {
   const [menuItem, setMenuItem] = useState<MenuItem | undefined>();
@@ -59,8 +50,8 @@ export function Menu(props: MenuProps) {
           }}
         >
           {menuItem.panel?.({
-            user: props.user,
-            fileClickedHandler: props.fileClickedHandler,
+            items: props.items,
+            itemClickedHandler: props.itemClickedHandler,
             selectedId: props.selectedId,
           })}
         </div>

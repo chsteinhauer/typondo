@@ -1,42 +1,70 @@
-import type { File } from "@prisma/client";
-import { useState } from "react";
+import type { File, Folder } from "@prisma/client";
+import { useEffect, useState } from "react";
 
-import type { UserWithRelations } from "../api/requests";
 import { Menu } from "../component.menu/_menu";
 import { Tab } from "../component.tab/_tab";
 import TabWrapper from "../component.tab/_tab.wrapper";
 import { Editor } from "../page.editor/_editor";
 
+import { ItemType, type Item, type MainProps } from "./_main.interfaces";
 import * as styles from "./_main.style";
 
-export type MainProps = {
-  user: UserWithRelations | null;
-};
-
 export function Main(props: MainProps) {
-  const [openFiles, setOpenFiles] = useState<File[]>([]);
-  const [selectedFile, setSelectedFile] = useState<File>();
+  const [openItems, setOpenItems] = useState<Item[]>([]);
+  const [selectedItem, setSelectedItem] = useState<Item>();
+  const [focusItem, setFocusItem] = useState<Item>();
+  const [items, setItems] = useState<Item[]>([]);
 
-  const fileClickedHandler = (file: File) => {
-    setSelectedFile(file);
-    setOpenFiles((files) => {
-      if (!files.find((f) => f.id === file.id)) files.push(file);
-      return files;
-    });
+  useEffect(() => {
+    //const { folders, files } = props.user;
+
+    if (!props.user) return;
+
+    const folders = props.user.folders;
+    const files = props.user.files;
+
+    setItems([
+      ...folders.map((folder: Folder) => {
+        return {
+          id: folder.id,
+          item: folder,
+          type: ItemType.FOLDER,
+        };
+      }),
+      ...files.map((file: File) => {
+        return {
+          id: file.id,
+          item: file,
+          type: ItemType.FILE,
+        };
+      }),
+    ]);
+  }, [props.user]);
+
+  const itemClickedHandler = (item: Item) => {
+    setSelectedItem(item);
+
+    if (item.type === ItemType.FILE) {
+      setFocusItem(item);
+      setOpenItems((items) => {
+        if (!items.find((f) => f.id === item.id)) items.push(item);
+        return items;
+      });
+    }
   };
 
-  const closeTabClickedHandler = (file: File) => {
-    setOpenFiles((files) => {
-      const _files = [...files];
-      const index = _files.findIndex((f) => f.id === file.id);
+  const closeTabClickedHandler = (item: Item) => {
+    setOpenItems((items) => {
+      const _items = [...items];
+      const index = _items.findIndex((f) => f.id === item.id);
 
-      if (index > -1) _files.splice(index, 1);
+      if (index > -1) _items.splice(index, 1);
 
-      if (files[index]?.id === selectedFile?.id && !!_files.length) {
-        setSelectedFile(_files[_files.length - 1]);
+      if (items[index]?.id === selectedItem?.id && !!_items.length) {
+        setSelectedItem(_items[_items.length - 1]);
       }
 
-      return _files;
+      return _items;
     });
   };
 
@@ -44,29 +72,31 @@ export function Main(props: MainProps) {
     <div className={styles.main_wrapper}>
       <div className={styles.main_menu}>
         <Menu
-          user={props.user}
-          fileClickedHandler={fileClickedHandler}
-          selectedId={selectedFile?.id}
+          items={items}
+          itemClickedHandler={itemClickedHandler}
+          selectedId={selectedItem?.id}
         />
       </div>
       <div className={styles.main_content}>
-        {openFiles.length > 0 && (
+        {openItems.length > 0 && (
           <div className={styles.main_tab_wrapper}>
             <TabWrapper>
-              {openFiles.map((f) => (
+              {openItems.map((item) => (
                 <Tab
-                  key={f.id}
-                  file={f}
-                  selected={f.id === selectedFile?.id}
+                  key={item.id}
+                  item={item}
+                  selected={item.id === selectedItem?.id}
                   closeTabClickedHandler={closeTabClickedHandler}
-                  fileClickedHandler={fileClickedHandler}
+                  itemClickedHandler={itemClickedHandler}
                 />
               ))}
             </TabWrapper>
           </div>
         )}
         <div className={styles.main_panel}>
-          {selectedFile && <Editor key={selectedFile.id} file={selectedFile} />}
+          {focusItem?.type === ItemType.FILE && (
+            <Editor key={focusItem.id} file={focusItem.item as File} />
+          )}
         </div>
       </div>
     </div>

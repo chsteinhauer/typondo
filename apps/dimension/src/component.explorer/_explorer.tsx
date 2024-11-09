@@ -1,61 +1,40 @@
 import type { Folder, File } from "@prisma/client";
 import { useMemo, useState } from "react";
 
-import type { UserWithRelations } from "../api/requests";
 import { ContextMenu } from "../component.contextmenu/_contextmenu";
 import { useContextMenu } from "../component.contextmenu/_contextmenu.hooks";
+import type { Item } from "../page.main/_main.interfaces";
+import { ItemType } from "../page.main/_main.interfaces";
 
+import type { ExplorerProps, TreeNode } from "./_explorer.interfaces";
 import * as styles from "./_explorer.styles";
-import type { TreeNode } from "./_tree-view";
-import TreeView, { TreeNodeType } from "./_tree-view";
-
-export type ExplorerProps = {
-  user: UserWithRelations;
-  fileClickedHandler: (file: File) => void;
-  selectedId?: string;
-};
+import TreeView from "./_tree-view";
 
 export function Explorer(props: ExplorerProps) {
   const { clicked, setClicked, coords, setCoords } = useContextMenu();
 
-  const [files, setFiles] = useState<File[]>(props.user.files);
-  const [folders, setFolders] = useState<Folder[]>(props.user.folders);
-
-  const genFileNode = (file: File): TreeNode => {
-    return {
-      id: file.id,
-      name: file.title,
-      item: file,
-      type: TreeNodeType.FILE,
-    };
-  };
+  const [items, setItems] = useState<Item[]>(props.items);
 
   const data = useMemo(() => {
-    const genTreeData = (folder: Folder): TreeNode => {
+    const genTreeData = (item: Item): TreeNode => {
       return {
-        id: folder.id,
-        name: folder.title,
-        item: folder,
-        type: TreeNodeType.FOLDER,
+        id: item.id,
+        name: item.item.title,
+        item: item,
         children: [
-          ...folders
-            .filter((f) => f.folderId === folder.id)
-            .map((f) => genTreeData(f)),
-          ...files
-            .filter((f) => f.folderId === folder.id)
-            .map((f) => genFileNode(f)),
+          ...items
+            .filter((c) => c.item.folderId === item.id)
+            .map((c) => genTreeData(c)),
         ],
       };
     };
 
-    const rootFolders = folders.filter((f) => !f.folderId);
-    const rootFiles = files.filter((f) => !f.folderId);
+    const root = items.filter((i) => !i.item.folderId);
 
-    return [
-      ...rootFolders.map((f) => genTreeData(f)),
-      ...rootFiles.map((f) => genFileNode(f)),
-    ];
-  }, [folders, files]);
+    return [...root.map((i) => genTreeData(i))];
+  }, [items]);
+
+  console.log(data);
 
   return (
     <div
@@ -74,7 +53,7 @@ export function Explorer(props: ExplorerProps) {
       <TreeView
         data={data}
         selectedId={props.selectedId}
-        fileClickedHandler={props.fileClickedHandler}
+        itemClickedHandler={props.itemClickedHandler}
       />
     </div>
   );
