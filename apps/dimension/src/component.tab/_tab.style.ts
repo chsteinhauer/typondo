@@ -47,7 +47,7 @@ export const tab_icon = css`
 `;
 
 export const tab_text = css`
-  margin-right: 32px;
+  margin-right: 36px;
   padding-left: 7px;
 
   overflow: hidden;
@@ -61,8 +61,8 @@ export const tab_button = css`
   right: 5px;
   z-index: 100;
 
-  height: 24px;
-  width: 24px;
+  height: 26px;
+  width: 26px;
 
   background-color: transparent;
   border: none;
@@ -73,6 +73,15 @@ export const tab_button = css`
   cursor: pointer;
 
   opacity: 0;
+
+  svg {
+    margin: auto;
+
+    height: 14px;
+    width: 14px;
+
+    display: block;
+  }
 
   &:hover {
     background-color: rgba(0 0 0 / 0.1);

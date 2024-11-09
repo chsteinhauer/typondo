@@ -6,7 +6,6 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        {/* <link rel="icon" href="../public/logo-transparent.png" /> */}
         <link
           rel="icon"
           type="image/png"
@@ -20,7 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
           sizes="180x180"
           href="/favicon/apple-touch-icon.png"
         />
-        <link rel="manifest" href="/site.webmanifest" />
+
         <title>Typondo</title>
       </Head>
       <Component {...pageProps} />
