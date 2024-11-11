@@ -1,5 +1,6 @@
 import {
   faChevronDown,
+  faChevronRight,
   faChevronUp,
   faFileLines,
   faFolder,
@@ -50,24 +51,6 @@ const TreeNode = (props: TreeNodeProps) => {
     props.itemClickedHandler(props.node.item);
   };
 
-  // const saveAsHandler = async (value: string) => {
-  //   if (!selectedId) return;
-
-  //   if (selectedItem.type === "folder") {
-  //     const item = selectedItem.item;
-
-  //     item.title = value;
-  //     await updateFolder(item as Folder);
-  //   } else {
-  //     const item = selectedItem.item;
-
-  //     item.title = value;
-  //     await updateFile(item as File);
-  //   }
-
-  //   setEditableItemId(undefined);
-  // };
-
   return (
     <li
       className={cx(
@@ -81,7 +64,7 @@ const TreeNode = (props: TreeNodeProps) => {
           {isOpen ? (
             <FontAwesomeIcon icon={faChevronDown} />
           ) : (
-            <FontAwesomeIcon icon={faChevronUp} />
+            <FontAwesomeIcon icon={faChevronRight} />
           )}
         </button>
       )}

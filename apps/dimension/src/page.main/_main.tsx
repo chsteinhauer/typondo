@@ -11,13 +11,15 @@ import { ItemType, type Item, type MainProps } from "./_main.interfaces";
 import * as styles from "./_main.style";
 
 export function Main(props: MainProps) {
-  const [openItems, setOpenItems] = useState<Item[]>([]);
-  const [selectedItem, setSelectedItem] = useState<Item>();
-  const [focusItem, setFocusItem] = useState<Item>();
-
+  // data structure states
   const [files, setFiles] = useState<File[]>(props.user?.files ?? []);
   const [folders, setFolders] = useState<Folder[]>(props.user?.folders ?? []);
   const [items, setItems] = useState<Item[]>([]);
+
+  // interacted data states
+  const [openItems, setOpenItems] = useState<Item[]>([]);
+  const [selectedItem, setSelectedItem] = useState<Item>();
+  const [focusItem, setFocusItem] = useState<Item>();
 
   // temporary dark mode
   useEffect(() => {

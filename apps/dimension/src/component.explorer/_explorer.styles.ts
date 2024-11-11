@@ -78,6 +78,22 @@ export const explorer_tree_node = css`
 
 export const explorer_toggle_icon = css`
   position: absolute;
+  top: 3px;
+  left: 0;
+
+  background-color: transparent;
+  border: none;
+
+  color: white;
+
+  cursor: pointer;
+
+  opacity: 0.8;
+
+  svg {
+    height: 11px;
+    width: 11px;
+  }
 `;
 
 export const explorer_tree_node_icon = css`
