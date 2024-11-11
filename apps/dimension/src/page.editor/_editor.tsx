@@ -20,6 +20,7 @@ export function Editor(props: EditorProps) {
   const editor = useEditor({
     extensions: [StarterKit],
     content: file.htmlContent,
+    immediatelyRender: false,
   });
 
   useEffect(() => {

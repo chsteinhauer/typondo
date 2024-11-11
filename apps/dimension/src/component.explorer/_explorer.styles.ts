@@ -57,7 +57,7 @@ export const explorer_tree_view = css`
 export const explorer_tree_node = css`
   position: relative;
 
-  margin: 0;
+  margin: 0 1px;
   padding-block: 1px;
 
   border: 1px solid transparent;
@@ -69,8 +69,10 @@ export const explorer_tree_node = css`
   }
 
   &.selected {
-    background-color: var(--complementary-color-light-trans);
-    border: 1px solid var(--complementary-color-light);
+    &:not(.editable) {
+      background-color: var(--complementary-color-light-trans);
+      border: 1px solid var(--complementary-color-light);
+    }
   }
 `;
 
@@ -106,5 +108,10 @@ export const explorer_tree_node_button = css`
 `;
 
 export const explorer_title = css`
+  position: relative;
+
   padding-left: 7px;
+
+  height: 16px;
+  width: 100%;
 `;

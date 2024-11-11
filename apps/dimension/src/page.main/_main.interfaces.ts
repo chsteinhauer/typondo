@@ -14,5 +14,5 @@ export type Item = {
 };
 
 export type MainProps = {
-  user: UserWithRelations | null;
+  user: UserWithRelations;
 };

@@ -6,6 +6,7 @@ import {
   faNetworkWired,
 } from "@fortawesome/free-solid-svg-icons";
 
+import type { UserWithRelations } from "../api/requests";
 import { Explorer } from "../component.explorer/_explorer";
 import type { Item } from "../page.main/_main.interfaces";
 
@@ -16,13 +17,17 @@ export const menuItems: MenuItem[] = [
     key: "Explorer",
     icon: faFolderTree,
     panel: (props: {
+      user: UserWithRelations;
       items: Item[];
-      itemClickedHandler: (item: Item) => void;
+      itemClickedHandler: (item?: Item) => void;
+      createItemHandler: (item: Item) => Promise<void>;
       selectedId?: string;
     }) => (
       <Explorer
+        user={props.user}
         items={props.items}
         itemClickedHandler={props.itemClickedHandler}
+        createItemHandler={props.createItemHandler}
         selectedId={props.selectedId}
       />
     ),

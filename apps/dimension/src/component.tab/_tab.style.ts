@@ -14,6 +14,13 @@ export const tab_group_wrapper = css`
 
 export const tab = css`
   position: relative;
+
+  &:hover {
+    /* :not(.) {
+      background-color: var(--primary-color-light);
+      color: var(--secondary-color-light);
+    } */
+  }
 `;
 
 export const tab_button = css`
@@ -50,7 +57,7 @@ export const tab_button = css`
 
   .${tab}:hover &,
   &:focus-visible {
-    color: var(--secondary-color-dark);
+    color: var(--secondary-color-light);
     opacity: 1;
   }
 `;
@@ -74,11 +81,6 @@ export const tab_card = css`
   color: var(--secondary-color);
 
   cursor: pointer;
-
-  &:hover,
-  .${tab_button}:hover {
-    background-color: var(--primary-color-light);
-  }
 
   svg {
     height: 14px;
@@ -107,5 +109,6 @@ export const tab_selected = css`
 
   &:hover {
     background-color: var(--background-color);
+    color: var(--background-text-color);
   }
 `;

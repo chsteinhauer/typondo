@@ -9,7 +9,8 @@ import { cx } from "@linaria/core";
 import type { ReactNode } from "react";
 import React, { useEffect, useState } from "react";
 
-import { InputEdit } from "../component.inputedit/_inputedit";
+import { InputEdit } from "../component.inputedit/_input-edit";
+import type { Item } from "../page.main/_main.interfaces";
 import { ItemType } from "../page.main/_main.interfaces";
 
 import type {
@@ -23,10 +24,14 @@ const TreeNode = (props: TreeNodeProps) => {
   const [selectedId, setSelectedId] = useState<string | undefined>(
     props.selectedId,
   );
+  const [editableId, setEditableId] = useState<string | undefined>(
+    props.editableId,
+  );
   const [isOpen, setIsOpen] = useState(false);
   const toggleNode = () => setIsOpen(!isOpen);
 
   useEffect(() => setSelectedId(props.selectedId), [props.selectedId]);
+  useEffect(() => setEditableId(props.editableId), [props.editableId]);
 
   const renderIcon = (node: TreeNode): ReactNode => {
     switch (node.item.type) {
@@ -39,7 +44,9 @@ const TreeNode = (props: TreeNodeProps) => {
     }
   };
 
-  const itemClickedHandler = () => {
+  const itemClickedHandler = (e) => {
+    e.stopPropagation();
+
     props.itemClickedHandler(props.node.item);
   };
 
@@ -65,7 +72,8 @@ const TreeNode = (props: TreeNodeProps) => {
     <li
       className={cx(
         styles.explorer_tree_node,
-        props.node.id === props.selectedId ? "selected" : "",
+        props.node.id === selectedId ? "selected" : "",
+        props.node.id === editableId ? "editable" : "",
       )}
     >
       {props.node.item.type === ItemType.FOLDER && (
@@ -85,20 +93,24 @@ const TreeNode = (props: TreeNodeProps) => {
         <span className={styles.explorer_tree_node_icon}>
           {renderIcon(props.node)}
         </span>
-        <span className={styles.explorer_title}>
-          {props.node.name}
-          {/* <InputEdit
+        <div className={styles.explorer_title}>
+          {/* {props.node.name} */}
+          <InputEdit
             key={props.node.id}
             value={props.node.name}
-            editMode={editableItemId === props.node.id}
-            onSave={saveAsFunc}
-          /> */}
-        </span>
+            editMode={editableId === props.node.id}
+            onSave={(value: string) =>
+              props.onSaveHandler(value, props.node.item)
+            }
+          />
+        </div>
         {isOpen && (
           <TreeView
-            data={props.node.children}
+            data={props.node.children ?? []}
             selectedId={selectedId}
+            editableId={editableId}
             itemClickedHandler={props.itemClickedHandler}
+            onSaveHandler={props.onSaveHandler}
           />
         )}
       </button>
@@ -114,7 +126,9 @@ const TreeView = (props: TreeViewProps) => {
           key={node.id}
           node={node}
           selectedId={props.selectedId}
+          editableId={props.editableId}
           itemClickedHandler={props.itemClickedHandler}
+          onSaveHandler={props.onSaveHandler}
         />
       ))}
     </ul>

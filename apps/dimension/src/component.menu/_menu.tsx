@@ -50,8 +50,10 @@ export function Menu(props: MenuProps) {
           }}
         >
           {menuItem.panel?.({
+            user: props.user,
             items: props.items,
             itemClickedHandler: props.itemClickedHandler,
+            createItemHandler: props.createItemHandler,
             selectedId: props.selectedId,
           })}
         </div>

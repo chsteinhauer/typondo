@@ -14,7 +14,7 @@ import {
 import type { ContextMenuItem } from "../component.contextmenu/_contextmenu";
 import { ContextMenu } from "../component.contextmenu/_contextmenu";
 import { useContextMenu } from "../component.contextmenu/_contextmenu.hooks";
-import { InputEdit } from "../component.inputedit/_inputedit";
+import { InputEdit } from "../component.inputedit/_input-edit";
 
 import * as styles from "./d_explorer.styles";
 

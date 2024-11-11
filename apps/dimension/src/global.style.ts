@@ -20,22 +20,6 @@ css`
       --editor-page-color: #ffff;
       --editor-page-border: #d3d3d3;
       --editor-text-color: #000;
-
-      /* @media (prefers-color-scheme: light) {
-        --background-color: #e8e8e8;
-        --editor-page-color: #ffff;
-        --editor-page-border: #d3d3d3;
-        --editor-text-color: #000;
-      }
-
-      @media (prefers-color-scheme: dark) {
-        --background-color: #1f1f1f;
-        --editor-page-color: #313335;
-        --editor-page-border: #565656;
-        --editor-text-color: #fff;
-      } */
-
-      /* dark mode */
     }
 
     #__next,
@@ -47,6 +31,11 @@ css`
 
       -webkit-font-smoothing: antialiased;
       font-family: Arial;
+
+      /* :focus {
+        border-radius: 3px;
+        outline: 2px solid var(--complementary-color-light);
+      } */
     }
 
     .dark-mode {

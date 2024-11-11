@@ -1,6 +1,7 @@
 import type { File, Folder } from "@prisma/client";
 import { useEffect, useState } from "react";
 
+import { createFile, createFolder } from "../api/requests";
 import { Menu } from "../component.menu/_menu";
 import { Tab } from "../component.tab/_tab";
 import TabWrapper from "../component.tab/_tab.wrapper";
@@ -13,17 +14,18 @@ export function Main(props: MainProps) {
   const [openItems, setOpenItems] = useState<Item[]>([]);
   const [selectedItem, setSelectedItem] = useState<Item>();
   const [focusItem, setFocusItem] = useState<Item>();
+
+  const [files, setFiles] = useState<File[]>(props.user?.files ?? []);
+  const [folders, setFolders] = useState<Folder[]>(props.user?.folders ?? []);
   const [items, setItems] = useState<Item[]>([]);
 
-  // temporary
+  // temporary dark mode
   useEffect(() => {
     document.documentElement.classList.toggle("dark-mode", true);
   }, []);
 
   useEffect(() => {
     if (!props.user) return;
-
-    const { folders, files } = props.user;
 
     setItems([
       ...folders.map((folder: Folder) => {
@@ -41,9 +43,36 @@ export function Main(props: MainProps) {
         };
       }),
     ]);
-  }, [props.user]);
+  }, [props.user, files, folders]);
 
-  const itemClickedHandler = (item: Item) => {
+  const createItemHandler = async (item: Item) => {
+    switch (item.type) {
+      case ItemType.FILE: {
+        const file = (await createFile(item.item as File)).file;
+
+        setFiles((prev) => [...prev, file]);
+        break;
+      }
+
+      case ItemType.FOLDER: {
+        const folder = (await createFolder(item.item as Folder)).folder;
+
+        setFolders((prev) => [...prev, folder]);
+        break;
+      }
+
+      default:
+        break;
+    }
+  };
+
+  const itemClickedHandler = (item?: Item) => {
+    if (!item) {
+      setSelectedItem(undefined);
+
+      return;
+    }
+
     setSelectedItem(item);
 
     if (item.type === ItemType.FILE) {
@@ -66,6 +95,11 @@ export function Main(props: MainProps) {
         setSelectedItem(_items[_items.length - 1]);
       }
 
+      if (!_items.length) {
+        setFocusItem(undefined);
+        setSelectedItem(undefined);
+      }
+
       return _items;
     });
   };
@@ -74,8 +108,10 @@ export function Main(props: MainProps) {
     <div className={styles.main_wrapper}>
       <div className={styles.main_menu}>
         <Menu
+          user={props.user}
           items={items}
           itemClickedHandler={itemClickedHandler}
+          createItemHandler={createItemHandler}
           selectedId={selectedItem?.id}
         />
       </div>
@@ -87,7 +123,9 @@ export function Main(props: MainProps) {
                 <Tab
                   key={item.id}
                   item={item}
-                  selected={item.id === selectedItem?.id}
+                  selected={
+                    item.id === selectedItem?.id || item.id === focusItem?.id
+                  }
                   closeTabClickedHandler={closeTabClickedHandler}
                   itemClickedHandler={itemClickedHandler}
                 />

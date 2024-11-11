@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+import * as styles from "./_input-edit.styles";
 
 type InputEditProps = {
   value: string;
@@ -7,16 +9,19 @@ type InputEditProps = {
 };
 export const InputEdit = (props: InputEditProps) => {
   const [inputValue, setInputValue] = useState(props.value);
+  const [editMode, setEditMode] = useState(false);
+
+  useEffect(() => setEditMode(props.editMode), [props.editMode]);
 
   const handleSave = () => {
     props.onSave(inputValue);
-    //setEditMode(false);
   };
 
   return (
     <div>
-      {props.editMode ? (
+      {editMode ? (
         <input
+          className={styles.input_edit}
           type="text"
           autoFocus
           value={inputValue}
