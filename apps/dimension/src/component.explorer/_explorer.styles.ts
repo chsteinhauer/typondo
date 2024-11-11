@@ -56,24 +56,6 @@ export const explorer_tree_view = css`
 
 export const explorer_tree_node = css`
   position: relative;
-
-  margin: 0;
-  padding-block: 1px;
-
-  border: 1px solid transparent;
-
-  cursor: pointer;
-
-  &:hover {
-    background-color: rgba(0 0 0 / 0.2);
-  }
-
-  &.selected {
-    &:not(.editable) {
-      background-color: var(--complementary-color-light-trans);
-      border: 1px solid var(--complementary-color-light);
-    }
-  }
 `;
 
 export const explorer_toggle_icon = css`
@@ -107,20 +89,35 @@ export const explorer_tree_node_icon = css`
 
 export const explorer_tree_node_button = css`
   margin: 0;
+  padding-block: 1px;
   padding-left: 25px;
 
   width: 100%;
 
   background-color: transparent;
   border: none;
-
-  display: flex;
-  align-items: center;
-  text-align: left;
+  border: 1px solid transparent;
 
   color: var(--secondary-color-light);
 
   cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0 0 0 / 0.2);
+  }
+
+  &.selected {
+    &:not(.editable) {
+      background-color: var(--complementary-color-light-trans);
+      border: 1px solid var(--complementary-color-light);
+    }
+  }
+`;
+
+export const explorer_tree_node_title = css`
+  display: flex;
+  align-items: center;
+  text-align: left;
 `;
 
 export const explorer_title = css`
@@ -130,4 +127,33 @@ export const explorer_title = css`
 
   height: 16px;
   width: 100%;
+`;
+
+export const tree_node_indentation_line = css`
+  --offset: 20px;
+
+  position: absolute;
+  top: var(--offset);
+  left: calc(8px + var(--depth, 1) * 9px);
+
+  height: calc(100% - var(--offset));
+  width: 1px;
+
+  background-color: var(--secondary-color-light-trans);
+
+  opacity: 0;
+  transition: opacity 150ms ease-in-out;
+
+  .${explorer_wrapper}:hover &,
+  &:focus-visible {
+    opacity: 1;
+  }
+`;
+
+export const tree_node_toggle_icon_indentation = css`
+  padding-left: calc(6px + var(--depth, 1) * 9px);
+`;
+
+export const tree_node_title_indentation = css`
+  padding-left: calc(24px + var(--depth, 1) * 9px);
 `;

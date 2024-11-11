@@ -1,7 +1,7 @@
 import { css } from "@linaria/core";
 //import "../global.style.js";
 
-export const menu_wrapper = css`
+export const menu_panel_wrapper = css`
   height: 100%;
 
   background-color: var(--primary-color);
@@ -10,11 +10,14 @@ export const menu_wrapper = css`
   flex-direction: row;
 `;
 
-export const menu = css`
-  border-right: 1px solid var(--secondary-color-dark);
+export const menu_wrapper = css`
+  height: 100%;
+
+  border-right: 1px solid var(--secondary-color-light-trans);
 
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 `;
 
 export const menu_logo = css`
@@ -32,16 +35,23 @@ export const menu_logo = css`
   }
 `;
 
-export const menu_settings = css`
-  margin-top: auto;
+export const menu_top = css`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const menu_bottom = css`
   margin-bottom: 3px;
+
+  display: flex;
+  flex-direction: column;
 `;
 
 export const panel = css`
   height: 100%;
   width: 250px;
 
-  border-right: 1px solid var(--secondary-color-dark);
+  border-right: 1px solid var(--secondary-color-light-trans);
 
   color: var(--secondary-color-light);
 `;

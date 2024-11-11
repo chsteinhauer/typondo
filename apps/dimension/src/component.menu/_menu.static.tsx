@@ -1,4 +1,4 @@
-import { faFile } from "@fortawesome/free-regular-svg-icons";
+import { faFile, faUserCircle } from "@fortawesome/free-regular-svg-icons";
 import {
   faFolderTree,
   faGear,
@@ -41,6 +41,11 @@ export const menuItems: MenuItem[] = [
     icon: faNetworkWired,
   },
 ];
+
+export const userItem: MenuItem = {
+  key: "Profile",
+  icon: faUserCircle,
+};
 
 export const settingsItem: MenuItem = {
   key: "Settings",

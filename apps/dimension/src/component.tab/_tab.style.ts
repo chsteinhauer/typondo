@@ -70,7 +70,7 @@ export const tab_card = css`
 
   background-color: var(--primary-color);
   border: 1px solid transparent;
-  border-right: 1px solid var(--secondary-color-dark);
+  border-right: 1px solid var(--secondary-color-light-trans);
 
   display: flex;
   flex-direction: row;

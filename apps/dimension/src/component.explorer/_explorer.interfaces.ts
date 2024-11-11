@@ -21,6 +21,8 @@ export type TreeNode = {
   id: string;
   name: string;
   item: Item;
+  depth: number;
+  isOpen: boolean;
   children?: TreeNode[];
 };
 

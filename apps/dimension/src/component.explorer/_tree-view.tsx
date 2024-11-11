@@ -11,7 +11,6 @@ import type { ReactNode } from "react";
 import React, { useEffect, useState } from "react";
 
 import { InputEdit } from "../component.inputedit/_input-edit";
-import type { Item } from "../page.main/_main.interfaces";
 import { ItemType } from "../page.main/_main.interfaces";
 
 import type {
@@ -29,10 +28,19 @@ const TreeNode = (props: TreeNodeProps) => {
     props.editableId,
   );
   const [isOpen, setIsOpen] = useState(false);
-  const toggleNode = () => setIsOpen(!isOpen);
+  const toggleNode = (e) => {
+    e.stopPropagation();
+
+    setIsOpen(!isOpen);
+  };
+
+  const openNodePath = () => {
+    setIsOpen(true);
+  };
 
   useEffect(() => setSelectedId(props.selectedId), [props.selectedId]);
   useEffect(() => setEditableId(props.editableId), [props.editableId]);
+  //useEffect(() => setIsOpen(true), [props.node.children]);
 
   const renderIcon = (node: TreeNode): ReactNode => {
     switch (node.item.type) {
@@ -52,51 +60,70 @@ const TreeNode = (props: TreeNodeProps) => {
   };
 
   return (
-    <li
-      className={cx(
-        styles.explorer_tree_node,
-        props.node.id === selectedId ? "selected" : "",
-        props.node.id === editableId ? "editable" : "",
-      )}
-    >
+    <li className={styles.explorer_tree_node}>
       {props.node.item.type === ItemType.FOLDER && (
-        <button onClick={toggleNode} className={styles.explorer_toggle_icon}>
-          {isOpen ? (
-            <FontAwesomeIcon icon={faChevronDown} />
-          ) : (
-            <FontAwesomeIcon icon={faChevronRight} />
-          )}
-        </button>
+        <>
+          <div
+            className={styles.tree_node_indentation_line}
+            // @ts-expect-error poor typings
+            style={{ "--depth": props.node.depth }}
+          />
+          <button
+            onClick={toggleNode}
+            className={cx(
+              styles.explorer_toggle_icon,
+              styles.tree_node_toggle_icon_indentation,
+            )}
+            // @ts-expect-error poor typings
+            style={{ "--depth": props.node.depth }}
+          >
+            {isOpen ? (
+              <FontAwesomeIcon icon={faChevronDown} />
+            ) : (
+              <FontAwesomeIcon icon={faChevronRight} />
+            )}
+          </button>
+        </>
       )}
 
       <button
-        className={styles.explorer_tree_node_button}
+        className={cx(
+          styles.explorer_tree_node_button,
+          props.node.id === selectedId ? "selected" : "",
+          props.node.id === editableId ? "editable" : "",
+          styles.tree_node_title_indentation,
+        )}
+        // @ts-expect-error poor typings
+        style={{ "--depth": props.node.depth }}
         onClick={itemClickedHandler}
       >
-        <span className={styles.explorer_tree_node_icon}>
-          {renderIcon(props.node)}
-        </span>
-        <div className={styles.explorer_title}>
-          {/* {props.node.name} */}
-          <InputEdit
-            key={props.node.id}
-            value={props.node.name}
-            editMode={editableId === props.node.id}
-            onSave={(value: string) =>
-              props.onSaveHandler(value, props.node.item)
-            }
-          />
+        <div className={styles.explorer_tree_node_title}>
+          <span className={styles.explorer_tree_node_icon}>
+            {renderIcon(props.node)}
+          </span>
+          <div className={styles.explorer_title}>
+            {/* {props.node.name} */}
+            <InputEdit
+              key={props.node.id}
+              value={props.node.name}
+              editMode={editableId === props.node.id}
+              onSave={(value: string) =>
+                props.onSaveHandler(value, props.node.item)
+              }
+            />
+          </div>
         </div>
-        {isOpen && (
-          <TreeView
-            data={props.node.children ?? []}
-            selectedId={selectedId}
-            editableId={editableId}
-            itemClickedHandler={props.itemClickedHandler}
-            onSaveHandler={props.onSaveHandler}
-          />
-        )}
       </button>
+
+      {isOpen && (
+        <TreeView
+          data={props.node.children ?? []}
+          selectedId={selectedId}
+          editableId={editableId}
+          itemClickedHandler={props.itemClickedHandler}
+          onSaveHandler={props.onSaveHandler}
+        />
+      )}
     </li>
   );
 };

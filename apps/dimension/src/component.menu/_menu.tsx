@@ -3,7 +3,7 @@ import { useState } from "react";
 import { MenuLink } from "./_menu-link";
 import type { MenuProps } from "./_menu.interfaces";
 import type { MenuItem } from "./_menu.static";
-import { menuItems, settingsItem } from "./_menu.static";
+import { menuItems, settingsItem, userItem } from "./_menu.static";
 import * as styles from "./_menu.style";
 
 export function Menu(props: MenuProps) {
@@ -18,22 +18,29 @@ export function Menu(props: MenuProps) {
   };
 
   return (
-    <div className={styles.menu_wrapper}>
+    <div className={styles.menu_panel_wrapper}>
       {
-        <div className={styles.menu}>
-          <div className={styles.menu_logo}>
-            <img src="/logo-white.png" alt="" />
+        <div className={styles.menu_wrapper}>
+          <div className={styles.menu_top}>
+            <div className={styles.menu_logo}>
+              <img src="/logo-white.png" alt="" />
+            </div>
+
+            {menuItems.map((item: MenuItem) => (
+              <MenuLink
+                key={item.key}
+                item={item}
+                menuLinkClickedHandler={menuLinkClickedHandler}
+              />
+            ))}
           </div>
 
-          {menuItems.map((item: MenuItem) => (
+          <div className={styles.menu_bottom}>
             <MenuLink
-              key={item.key}
-              item={item}
+              key={userItem.key}
+              item={userItem}
               menuLinkClickedHandler={menuLinkClickedHandler}
             />
-          ))}
-
-          <div className={styles.menu_settings}>
             <MenuLink
               key={settingsItem.key}
               item={settingsItem}

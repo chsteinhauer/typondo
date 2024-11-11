@@ -3,7 +3,7 @@ import {
   faFolderPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useReducer, useState } from "react";
 
 import { ContextMenu } from "../component.contextmenu/_contextmenu";
 import { useContextMenu } from "../component.contextmenu/_contextmenu.hooks";
@@ -23,34 +23,43 @@ export function Explorer(props: ExplorerProps) {
   useEffect(() => setItems(props.items), [props.items]);
 
   const data = useMemo(() => {
-    const genTreeData = (item: Item): TreeNode => {
+    const genTreeData = (item: Item, depth: number): TreeNode => {
       return {
         id: item.id,
         name: item.item.title,
         item: item,
+        depth,
+        isOpen: false,
         children: [
           ...items
             .filter((c) => c.item.folderId === item.id)
-            .map((c) => genTreeData(c)),
+            .map((c) => genTreeData(c, depth + 1)),
         ],
       };
     };
 
     const root = items.filter((i) => !i.item.folderId);
 
-    return [...root.map((i) => genTreeData(i))];
+    return [...root.map((i) => genTreeData(i, 0))];
   }, [items]);
+
+  function reducer(state: TreeNode[], action) {}
+
+  const [state, dispatch] = useReducer(reducer, data);
 
   const explorerClickedHandler = () => {
     props.itemClickedHandler(undefined);
   };
 
   const addItemClickedHandler = async (type: ItemType) => {
+    const parent = items.find((i) => i.id === props.selectedId);
+
     const tmp = {
       id: TMP_ID,
       title: "",
       authorId: props.user.id,
-      folderId: null,
+      folderId:
+        parent?.type === ItemType.FOLDER ? parent.id : parent?.item.folderId,
     };
 
     // const file = (await createFile(tmp as File)).file;
@@ -68,7 +77,7 @@ export function Explorer(props: ExplorerProps) {
 
     setItems((prev) => {
       const items = [...prev];
-      items.push(item);
+      items.push(item as Item);
 
       return items;
     });

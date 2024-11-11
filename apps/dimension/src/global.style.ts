@@ -10,6 +10,7 @@ css`
       --secondary-color-dark: #447784;
       --secondary-color: #6b949e;
       --secondary-color-light: #a9c4ca;
+      --secondary-color-light-trans: #a9c4ca32;
       --complementary-color: #4f1b0f;
       --complementary-color-light: #b43e22;
       --complementary-color-light-trans: #b43e2252;
