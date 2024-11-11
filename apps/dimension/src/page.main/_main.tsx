@@ -87,22 +87,24 @@ export function Main(props: MainProps) {
   };
 
   const closeTabClickedHandler = (item: Item) => {
-    setOpenItems((items) => {
-      const _items = [...items];
-      const index = _items.findIndex((f) => f.id === item.id);
+    setOpenItems((prev) => {
+      const next = [...prev];
+      const index = next.findIndex((f) => f.id === item.id);
 
-      if (index > -1) _items.splice(index, 1);
+      if (index > -1) next.splice(index, 1);
 
-      if (items[index]?.id === selectedItem?.id && !!_items.length) {
-        setSelectedItem(_items[_items.length - 1]);
+      if (prev[index]?.id === focusItem?.id && !!next.length) {
+        setSelectedItem(next[next.length - 1]);
+        setFocusItem(next[next.length - 1]);
+        console.log("hello?");
       }
 
-      if (!_items.length) {
+      if (!next.length) {
         setFocusItem(undefined);
         setSelectedItem(undefined);
       }
 
-      return _items;
+      return next;
     });
   };
 

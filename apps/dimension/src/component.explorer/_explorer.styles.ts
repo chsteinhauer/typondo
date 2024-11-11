@@ -57,7 +57,7 @@ export const explorer_tree_view = css`
 export const explorer_tree_node = css`
   position: relative;
 
-  margin: 0 1px;
+  margin: 0;
   padding-block: 1px;
 
   border: 1px solid transparent;
@@ -78,7 +78,7 @@ export const explorer_tree_node = css`
 
 export const explorer_toggle_icon = css`
   position: absolute;
-  top: 3px;
+  top: 2px;
   left: 0;
 
   background-color: transparent;
