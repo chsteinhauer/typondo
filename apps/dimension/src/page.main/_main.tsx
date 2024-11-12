@@ -5,7 +5,7 @@ import { createFile, createFolder } from "../api/requests";
 import { Menu } from "../component.menu/_menu";
 import { Tab } from "../component.tab/_tab";
 import TabWrapper from "../component.tab/_tab.wrapper";
-import { Editor } from "../page.editor/_editor";
+import { EditorView } from "../page.editor/_editor";
 
 import { ItemType, type Item, type MainProps } from "./_main.interfaces";
 import * as styles from "./_main.style";
@@ -25,6 +25,10 @@ export function Main(props: MainProps) {
   useEffect(() => {
     document.documentElement.classList.toggle("dark-mode", true);
   }, []);
+
+  // useEffect(() => {
+  //   document.documentElement.classList.toggle("dark-purple-palette", true);
+  // }, []);
 
   useEffect(() => {
     if (!props.user) return;
@@ -139,7 +143,7 @@ export function Main(props: MainProps) {
         )}
         <div className={styles.main_panel}>
           {focusItem?.type === ItemType.FILE && (
-            <Editor key={focusItem.id} file={focusItem.item as File} />
+            <EditorView key={focusItem.id} file={focusItem.item as File} />
           )}
         </div>
       </div>

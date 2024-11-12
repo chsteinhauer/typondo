@@ -2,9 +2,11 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
 import type { File } from "@prisma/client";
+import type { Editor } from "@tiptap/react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useEffect } from "react";
+import { useDebounce } from "use-debounce";
 
 import { updateFile } from "../api/requests";
 
@@ -14,7 +16,7 @@ type EditorProps = {
   file: File;
 };
 
-export function Editor(props: EditorProps) {
+export function EditorView(props: EditorProps) {
   const { file } = props;
 
   const editor = useEditor({
@@ -23,14 +25,27 @@ export function Editor(props: EditorProps) {
     immediatelyRender: false,
   });
 
+  const saveContent = async (_e: Editor | null, _f: File) => {
+    _f.htmlContent = _e?.getHTML() ?? "";
+    console.log(_e?.getHTML());
+    await updateFile(_f);
+  };
+
+  // create editor instance and other stuff
+  const [debouncedEditor] = useDebounce(editor?.state.doc.content, 1000);
+
+  useEffect(() => {
+    if (debouncedEditor) {
+      saveContent(editor, file);
+    }
+  }, [debouncedEditor, editor, file]);
+
   useEffect(() => {
     const keyDownHandler = async (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "s") {
         event.preventDefault();
 
-        file.htmlContent = editor?.getHTML() ?? "";
-        console.log(editor?.getHTML());
-        await updateFile(file);
+        await saveContent(editor, file);
 
         editor?.commands.blur();
       }

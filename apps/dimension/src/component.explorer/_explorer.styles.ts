@@ -108,8 +108,11 @@ export const explorer_tree_node_button = css`
 
   &.selected {
     &:not(.editable) {
-      background-color: var(--complementary-color-light-trans);
-      border: 1px solid var(--complementary-color-light);
+      background-color: var(--complementary-color-light-trans-52);
+
+      &:focus {
+        border: 1px solid var(--complementary-color-light);
+      }
     }
   }
 `;
@@ -130,13 +133,13 @@ export const explorer_title = css`
 `;
 
 export const tree_node_indentation_line = css`
-  --offset: 20px;
+  --offset: 21px;
 
   position: absolute;
   top: var(--offset);
   left: calc(8px + var(--depth, 1) * 9px);
 
-  height: calc(100% - var(--offset));
+  height: calc(100% - var(--offset) - 2px);
   width: 1px;
 
   background-color: var(--secondary-color-light-trans);

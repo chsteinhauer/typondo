@@ -13,7 +13,8 @@ css`
       --secondary-color-light-trans: #a9c4ca32;
       --complementary-color: #4f1b0f;
       --complementary-color-light: #b43e22;
-      --complementary-color-light-trans: #b43e2252;
+      --complementary-color-light-trans-98: #b43e2298;
+      --complementary-color-light-trans-52: #b43e2252;
 
       /* light mode default */
       --background-color: #e8e8e8;
@@ -45,6 +46,20 @@ css`
       --editor-page-color: #313335;
       --editor-page-border: #565656;
       --editor-text-color: #fff;
+    }
+
+    .dark-purple-palette {
+      --primary-color-dark: #1d052d;
+      --primary-color: #200234;
+      --primary-color-light: #2a0345;
+      --secondary-color-dark: #bc7bff;
+      --secondary-color: #d4aaff;
+      --secondary-color-light: #f1d7ff;
+      --secondary-color-light-trans: #d4aaff32;
+      --complementary-color: #05befb;
+      --complementary-color-light: #75ddff;
+      --complementary-color-light-trans-98: #75ddff98;
+      --complementary-color-light-trans-52: #75ddff52;
     }
   }
 `;

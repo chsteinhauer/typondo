@@ -36,11 +36,19 @@ const TreeNode = (props: TreeNodeProps) => {
 
   const openNodePath = () => {
     setIsOpen(true);
+
+    props.openNodePath();
   };
 
   useEffect(() => setSelectedId(props.selectedId), [props.selectedId]);
   useEffect(() => setEditableId(props.editableId), [props.editableId]);
   //useEffect(() => setIsOpen(true), [props.node.children]);
+  useEffect(() => {
+    const { id } = props.node;
+    if (id === selectedId || id === editableId) {
+      props.openNodePath();
+    }
+  }, [selectedId, editableId, props]);
 
   const renderIcon = (node: TreeNode): ReactNode => {
     switch (node.item.type) {
@@ -55,8 +63,11 @@ const TreeNode = (props: TreeNodeProps) => {
 
   const itemClickedHandler = (e) => {
     e.stopPropagation();
-
     props.itemClickedHandler(props.node.item);
+
+    if (props.node.item.type === ItemType.FOLDER) {
+      toggleNode(e);
+    }
   };
 
   return (
@@ -120,6 +131,7 @@ const TreeNode = (props: TreeNodeProps) => {
           data={props.node.children ?? []}
           selectedId={selectedId}
           editableId={editableId}
+          openNodePath={openNodePath}
           itemClickedHandler={props.itemClickedHandler}
           onSaveHandler={props.onSaveHandler}
         />
@@ -137,6 +149,7 @@ const TreeView = (props: TreeViewProps) => {
           node={node}
           selectedId={props.selectedId}
           editableId={props.editableId}
+          openNodePath={props.openNodePath}
           itemClickedHandler={props.itemClickedHandler}
           onSaveHandler={props.onSaveHandler}
         />

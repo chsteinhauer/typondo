@@ -13,6 +13,7 @@ export type TreeViewProps = {
   data: TreeNode[];
   itemClickedHandler: (item?: Item) => void;
   onSaveHandler: (value: string, item: Item) => void;
+  openNodePath: () => void;
   selectedId?: string;
   editableId?: string;
 };
@@ -30,6 +31,7 @@ export type TreeNodeProps = {
   node: TreeNode;
   itemClickedHandler: (item?: Item) => void;
   onSaveHandler: (value: string, item: Item) => void;
+  openNodePath: () => void;
   selectedId?: string;
   editableId?: string;
 };

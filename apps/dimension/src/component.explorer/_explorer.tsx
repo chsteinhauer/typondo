@@ -143,6 +143,7 @@ export function Explorer(props: ExplorerProps) {
         selectedId={props.selectedId}
         itemClickedHandler={props.itemClickedHandler}
         onSaveHandler={onSaveHandler}
+        openNodePath={() => {}}
       />
     </div>
   );
