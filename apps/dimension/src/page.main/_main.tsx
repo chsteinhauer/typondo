@@ -143,7 +143,7 @@ export function Main(props: MainProps) {
         )}
         <div className={styles.main_panel}>
           {focusItem?.type === ItemType.FILE && (
-            <EditorView key={focusItem.id} file={focusItem.item as File} />
+            <EditorView key={focusItem.id} item={focusItem} />
           )}
         </div>
       </div>

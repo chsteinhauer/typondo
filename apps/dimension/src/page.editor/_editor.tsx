@@ -10,14 +10,12 @@ import { useDebounce } from "use-debounce";
 
 import { updateFile } from "../api/requests";
 
+import { EditorToolbar } from "./_editor-toolbar";
+import type { EditorProps } from "./_editor.interfaces";
 import * as styles from "./_editor.styles";
 
-type EditorProps = {
-  file: File;
-};
-
 export function EditorView(props: EditorProps) {
-  const { file } = props;
+  const file = props.item.item as File;
 
   const editor = useEditor({
     extensions: [StarterKit],
@@ -60,13 +58,15 @@ export function EditorView(props: EditorProps) {
 
   return (
     <div className={styles.editor_wrapper}>
-      <div className={styles.editor_toolbar}></div>
+      <EditorToolbar editor={editor} />
 
-      <div
-        className={styles.editor_canvas}
-        onClick={() => editor?.commands.focus()}
-      >
-        <EditorContent className={styles.editor_content} editor={editor} />
+      <div className={styles.editor_canvas_wrapper}>
+        <div
+          className={styles.editor_canvas}
+          onClick={() => editor?.commands.focus()}
+        >
+          <EditorContent className={styles.editor_content} editor={editor} />
+        </div>
       </div>
     </div>
   );
