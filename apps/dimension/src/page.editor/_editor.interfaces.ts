@@ -6,6 +6,11 @@ export type EditorProps = {
   item: Item;
 };
 
+export type EditorBannerProps = {
+  item: Item;
+  isSaving: boolean;
+};
+
 export type ToolbarEditorProps = {
   editor: Editor | null;
 };

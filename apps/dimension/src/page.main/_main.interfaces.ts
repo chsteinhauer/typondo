@@ -10,6 +10,7 @@ export enum ItemType {
 export type Item = {
   id: string;
   item: File | Folder;
+  path: string[];
   type: ItemType;
 };
 

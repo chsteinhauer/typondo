@@ -38,6 +38,7 @@ export function Main(props: MainProps) {
         return {
           id: folder.id,
           item: folder,
+          path: [],
           type: ItemType.FOLDER,
         };
       }),
@@ -45,6 +46,7 @@ export function Main(props: MainProps) {
         return {
           id: file.id,
           item: file,
+          path: [],
           type: ItemType.FILE,
         };
       }),
@@ -78,6 +80,8 @@ export function Main(props: MainProps) {
 
       return;
     }
+
+    console.log(item.path);
 
     setSelectedItem(item);
 

@@ -23,7 +23,14 @@ export function Explorer(props: ExplorerProps) {
   useEffect(() => setItems(props.items), [props.items]);
 
   const data = useMemo(() => {
-    const genTreeData = (item: Item, depth: number): TreeNode => {
+    const genTreeData = (
+      item: Item,
+      depth: number,
+      path: string[],
+    ): TreeNode => {
+      // extend path with current title and set property on item
+      item.path = [...path, item.item.title];
+
       return {
         id: item.id,
         name: item.item.title,
@@ -33,14 +40,14 @@ export function Explorer(props: ExplorerProps) {
         children: [
           ...items
             .filter((c) => c.item.folderId === item.id)
-            .map((c) => genTreeData(c, depth + 1)),
+            .map((c) => genTreeData(c, depth + 1, item.path)),
         ],
       };
     };
 
     const root = items.filter((i) => !i.item.folderId);
 
-    return [...root.map((i) => genTreeData(i, 0))];
+    return [...root.map((i) => genTreeData(i, 0, []))];
   }, [items]);
 
   function reducer(state: TreeNode[], action) {}

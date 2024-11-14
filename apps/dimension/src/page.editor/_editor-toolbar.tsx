@@ -33,17 +33,15 @@ import * as styles from "./_editor.styles";
 export function EditorToolbar(props: ToolbarEditorProps) {
   const { editor } = props;
   return (
-    <div className={styles.editor_toolbar_wrapper}>
-      <div className={styles.editor_toolbar}>
-        <EditorToolbarButton
-          value="bold"
-          aria-label="Toggle Bold selection"
-          onClick={() => editor?.chain().focus().toggleBold().run()}
-          editor={editor}
-        >
-          <FontAwesomeIcon icon={faBold} />
-        </EditorToolbarButton>
-      </div>
+    <div className={styles.editor_toolbar}>
+      <EditorToolbarButton
+        value="bold"
+        aria-label="Toggle Bold selection"
+        onClick={() => editor?.chain().focus().toggleBold().run()}
+        editor={editor}
+      >
+        <FontAwesomeIcon icon={faBold} />
+      </EditorToolbarButton>
     </div>
   );
 }

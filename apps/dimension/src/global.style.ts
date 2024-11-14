@@ -31,6 +31,8 @@ css`
 
       height: 100%;
 
+      overscroll-behavior: contain;
+
       -webkit-font-smoothing: antialiased;
       font-family: Arial;
 

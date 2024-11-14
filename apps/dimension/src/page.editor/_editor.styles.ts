@@ -16,13 +16,16 @@ export const editor_canvas = css`
   margin: 24px auto;
 
   max-width: calc(210mm);
-  height: 297mm;
   width: 100%;
 
-  background-color: var(--editor-page-color);
-  border: 1px solid var(--editor-page-border);
-
   cursor: text;
+
+  &.page-view {
+    height: 297mm;
+
+    background-color: var(--editor-page-color);
+    border: 1px solid var(--editor-page-border);
+  }
 `;
 
 export const editor_content = css`
@@ -37,7 +40,61 @@ export const editor_content = css`
   }
 `;
 
-export const editor_toolbar_wrapper = css`
+export const editor_banner_wrapper = css`
+  height: 20px;
+  width: 100%;
+
+  font-size: 13px;
+  color: var(--background-text-color);
+`;
+
+export const editor_banner = css`
+  margin: 5px 7px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  svg {
+    height: 11px;
+    width: 11px;
+  }
+`;
+
+export const editor_banner_path_entry = css`
+  padding: 0 2px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  opacity: 0.7;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+export const editor_banner_saving = css`
+  margin-left: 20px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+
+  opacity: 0;
+
+  &.saving {
+    opacity: 1;
+  }
+`;
+
+export const editor_header = css`
   position: fixed;
   z-index: 1;
 
@@ -48,6 +105,20 @@ export const editor_toolbar_wrapper = css`
 
   background-color: var(--background-color);
   border-bottom: 1px solid var(--editor-page-border);
+`;
+
+export const editor_footer = css`
+  position: fixed;
+  right: 5px;
+  bottom: 5px;
+  z-index: 1;
+
+  height: fit-content;
+
+  background-color: var(--background-color);
+
+  font-size: 12px;
+  color: var(--background-text-color);
 `;
 
 export const editor_toolbar = css`
