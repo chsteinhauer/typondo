@@ -21,34 +21,12 @@ import type {
 import * as styles from "./_explorer.styles";
 
 const TreeNode = (props: TreeNodeProps) => {
-  const [selectedId, setSelectedId] = useState<string | undefined>(
-    props.selectedId,
-  );
-  const [editableId, setEditableId] = useState<string | undefined>(
-    props.editableId,
-  );
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(props.node.isOpen);
   const toggleNode = (e) => {
     e.stopPropagation();
 
     setIsOpen(!isOpen);
   };
-
-  const openNodePath = () => {
-    setIsOpen(true);
-
-    props.openNodePath();
-  };
-
-  useEffect(() => setSelectedId(props.selectedId), [props.selectedId]);
-  useEffect(() => setEditableId(props.editableId), [props.editableId]);
-  //useEffect(() => setIsOpen(true), [props.node.children]);
-  useEffect(() => {
-    const { id } = props.node;
-    if (id === selectedId || id === editableId) {
-      props.openNodePath();
-    }
-  }, [selectedId, editableId, props]);
 
   const renderIcon = (node: TreeNode): ReactNode => {
     switch (node.item.type) {
@@ -69,6 +47,22 @@ const TreeNode = (props: TreeNodeProps) => {
       toggleNode(e);
     }
   };
+
+  useEffect(() => {
+    const traverseTree = (node: TreeNode): boolean => {
+      if (node.id === props.selectedId) return true;
+      else {
+        const isChildSelected = !!node.children?.find((n) => traverseTree(n));
+        if (isChildSelected) setIsOpen(true);
+
+        return isChildSelected;
+      }
+    };
+
+    if (!isOpen && props.node.children?.find((n) => traverseTree(n))) {
+      setIsOpen(true);
+    }
+  }, [props.node.children, isOpen, props.selectedId]);
 
   return (
     <li className={styles.explorer_tree_node}>
@@ -100,8 +94,8 @@ const TreeNode = (props: TreeNodeProps) => {
       <button
         className={cx(
           styles.explorer_tree_node_button,
-          props.node.id === selectedId ? "selected" : "",
-          props.node.id === editableId ? "editable" : "",
+          props.node.id === props.selectedId ? "selected" : "",
+          props.node.id === props.editableId ? "editable" : "",
           styles.tree_node_title_indentation,
         )}
         // @ts-expect-error poor typings
@@ -117,7 +111,7 @@ const TreeNode = (props: TreeNodeProps) => {
             <InputEdit
               key={props.node.id}
               value={props.node.name}
-              editMode={editableId === props.node.id}
+              editMode={props.editableId === props.node.id}
               onSave={(value: string) =>
                 props.onSaveHandler(value, props.node.item)
               }
@@ -129,9 +123,8 @@ const TreeNode = (props: TreeNodeProps) => {
       {isOpen && (
         <TreeView
           data={props.node.children ?? []}
-          selectedId={selectedId}
-          editableId={editableId}
-          openNodePath={openNodePath}
+          selectedId={props.selectedId}
+          editableId={props.editableId}
           itemClickedHandler={props.itemClickedHandler}
           onSaveHandler={props.onSaveHandler}
         />
@@ -149,7 +142,6 @@ const TreeView = (props: TreeViewProps) => {
           node={node}
           selectedId={props.selectedId}
           editableId={props.editableId}
-          openNodePath={props.openNodePath}
           itemClickedHandler={props.itemClickedHandler}
           onSaveHandler={props.onSaveHandler}
         />

@@ -50,10 +50,6 @@ export function Explorer(props: ExplorerProps) {
     return [...root.map((i) => genTreeData(i, 0, []))];
   }, [items]);
 
-  function reducer(state: TreeNode[], action) {}
-
-  const [state, dispatch] = useReducer(reducer, data);
-
   const explorerClickedHandler = () => {
     props.itemClickedHandler(undefined);
   };
@@ -150,7 +146,6 @@ export function Explorer(props: ExplorerProps) {
         selectedId={props.selectedId}
         itemClickedHandler={props.itemClickedHandler}
         onSaveHandler={onSaveHandler}
-        openNodePath={() => {}}
       />
     </div>
   );

@@ -17,8 +17,6 @@ import * as styles from "./_editor.styles";
 
 export function EditorView(props: EditorProps) {
   const [isSaving, setIsSaving] = useState(false);
-  const [characterCount, setCharacterCound] = useState<number>(0);
-  const [wordCount, setWordCound] = useState<number>(0);
 
   const file = props.item.item as File;
 
@@ -26,13 +24,13 @@ export function EditorView(props: EditorProps) {
     extensions: [StarterKit, CharacterCount.configure({})],
     content: file.htmlContent,
     immediatelyRender: false,
-    onCreate({ e }) {
-      countTheWords();
-    },
-    onUpdate({ e }) {
-      countTheWords();
-      setIsSaving(true);
-    },
+    // onCreate({ e }) {
+    //   countTheWords();
+    // },
+    // onUpdate({ e }) {
+    //   countTheWords();
+    //   setIsSaving(true);
+    // },
   });
 
   const saveContent = async (_e: Editor | null, _f: File) => {
