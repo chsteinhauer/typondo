@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Droppable } from "../component.dnd/droppable";
+import { Droppable } from "../component.dnd/_droppable";
 import { ItemType } from "../page.main/_main.interfaces";
 
 import { TreeNode } from "./_tree-node";

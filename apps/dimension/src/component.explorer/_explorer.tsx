@@ -1,4 +1,10 @@
-import { DndContext } from "@dnd-kit/core";
+import {
+  DndContext,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import {
   faFileCirclePlus,
   faFolderPlus,
@@ -18,6 +24,22 @@ import * as styles from "./_explorer.styles";
 
 export function Explorer(props: ExplorerProps) {
   const { clicked, setClicked, coords, setCoords } = useContextMenu();
+
+  const mouseSensor = useSensor(MouseSensor, {
+    // Require the mouse to move by 10 pixels before activating
+    activationConstraint: {
+      distance: 10,
+    },
+  });
+  const touchSensor = useSensor(TouchSensor, {
+    // Press delay of 250ms, with tolerance of 5px of movement
+    activationConstraint: {
+      delay: 250,
+      tolerance: 5,
+    },
+  });
+
+  const sensors = useSensors(mouseSensor, touchSensor);
 
   const [items, setItems] = useState<Item[]>([]);
   const [editableId, setEditableId] = useState<string>();
@@ -148,7 +170,7 @@ export function Explorer(props: ExplorerProps) {
           <FontAwesomeIcon icon={faFolderPlus} />
         </button>
       </div>
-      <DndContext onDragEnd={dragEndHandler}>
+      <DndContext onDragEnd={dragEndHandler} sensors={sensors}>
         <TreeView
           editableId={editableId}
           data={data}

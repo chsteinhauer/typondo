@@ -27,6 +27,12 @@ export function TreeNode(props: TreeNodeProps) {
     }
   };
 
+  const onDragOverHandler = () => {
+    console.log("DRAG");
+
+    setIsOpen(true);
+  };
+
   useEffect(() => {
     const traverseTree = (node: ITreeNode): boolean => {
       if (node.id === props.selectedId) return true;
@@ -46,7 +52,7 @@ export function TreeNode(props: TreeNodeProps) {
   return (
     <li className={styles.tree_node}>
       {props.node.item.type === ItemType.FOLDER && (
-        <>
+        <div onDragOver={onDragOverHandler}>
           <TreeNodeToggleButton
             key={"toggle-button-" + props.node.id}
             toggleButtonHandler={toggleNode}
@@ -62,7 +68,7 @@ export function TreeNode(props: TreeNodeProps) {
             itemClickedHandler={itemClickedHandler}
             onSaveHandler={props.onSaveHandler}
           />
-        </>
+        </div>
       )}
 
       {props.node.item.type === ItemType.FILE && (

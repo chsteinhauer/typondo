@@ -22,9 +22,9 @@ export function Main(props: MainProps) {
   const [focusItem, setFocusItem] = useState<Item>();
 
   // temporary dark mode
-  // useEffect(() => {
-  //   document.documentElement.classList.toggle("dark-mode", true);
-  // }, []);
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark-mode", true);
+  }, []);
 
   // useEffect(() => {
   //   document.documentElement.classList.toggle("dark-purple-palette", true);
