@@ -1,22 +1,21 @@
 import React from "react";
 
-import { Draggable } from "../component.dnd/draggable";
 import { Droppable } from "../component.dnd/droppable";
-import type { TreeViewProps } from "../component.explorer/_explorer.interfaces";
 import { ItemType } from "../page.main/_main.interfaces";
 
 import { TreeNode } from "./_tree-node";
+import type { TreeViewProps } from "./_tree-view.interfaces";
 import * as styles from "./_tree-view.styles";
 
 export function TreeView(props: TreeViewProps) {
   return (
     <ul className={styles.tree_view}>
       {props.data?.map((node) => (
-        <>
+        <div key={"view-" + node.id}>
           {node.item.type === ItemType.FOLDER && (
             <Droppable key={node.id} id={node.id}>
               <TreeNode
-                key={node.id}
+                key={"folder-" + node.id}
                 node={node}
                 selectedId={props.selectedId}
                 editableId={props.editableId}
@@ -28,7 +27,7 @@ export function TreeView(props: TreeViewProps) {
 
           {node.item.type === ItemType.FILE && (
             <TreeNode
-              key={node.id}
+              key={"file-" + node.id}
               node={node}
               selectedId={props.selectedId}
               editableId={props.editableId}
@@ -36,7 +35,7 @@ export function TreeView(props: TreeViewProps) {
               onSaveHandler={props.onSaveHandler}
             />
           )}
-        </>
+        </div>
       ))}
     </ul>
   );

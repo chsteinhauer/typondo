@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ContextMenu } from "../component.contextmenu/_contextmenu";
 import { useContextMenu } from "../component.contextmenu/_contextmenu.hooks";
 import TreeView from "../component.tree-view/_tree-view";
-import type { TreeNode } from "../component.tree-view/_tree-view.interfaces";
+import type { ITreeNode } from "../component.tree-view/_tree-view.interfaces";
 import { TMP_ID } from "../global.static";
 import { ItemType, type Item } from "../page.main/_main.interfaces";
 
@@ -29,7 +29,7 @@ export function Explorer(props: ExplorerProps) {
       item: Item,
       depth: number,
       path: string[],
-    ): TreeNode => {
+    ): ITreeNode => {
       // extend path with current title and set property on item
       item.path = [...path, item.item.title];
 
@@ -115,10 +115,6 @@ export function Explorer(props: ExplorerProps) {
     const { over } = event;
 
     console.log(over);
-
-    // If the item is dropped over a container, set it as the parent
-    // otherwise reset the parent to `null`
-    //setParent(over ? over.id : null);
   };
 
   return (
@@ -152,7 +148,7 @@ export function Explorer(props: ExplorerProps) {
           <FontAwesomeIcon icon={faFolderPlus} />
         </button>
       </div>
-      <DndContext>
+      <DndContext onDragEnd={dragEndHandler}>
         <TreeView
           editableId={editableId}
           data={data}

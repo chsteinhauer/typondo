@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+import { Draggable } from "../component.dnd/_draggable";
 import { ItemType } from "../page.main/_main.interfaces";
 
 import { TreeNodeContent } from "./_tree-node-content";
@@ -45,24 +46,41 @@ export function TreeNode(props: TreeNodeProps) {
   return (
     <li className={styles.tree_node}>
       {props.node.item.type === ItemType.FOLDER && (
-        <TreeNodeToggleButton
-          key={props.node.id}
-          toggleButtonHandler={toggleNode}
-          isOpen={isOpen}
-          node={props.node}
-        />
+        <>
+          <TreeNodeToggleButton
+            key={"toggle-button-" + props.node.id}
+            toggleButtonHandler={toggleNode}
+            isOpen={isOpen}
+            node={props.node}
+          />
+
+          <TreeNodeContent
+            key={"content-" + props.node.id}
+            node={props.node}
+            selectedId={props.selectedId}
+            editableId={props.editableId}
+            itemClickedHandler={itemClickedHandler}
+            onSaveHandler={props.onSaveHandler}
+          />
+        </>
       )}
 
-      <TreeNodeContent
-        node={props.node}
-        selectedId={props.selectedId}
-        editableId={props.editableId}
-        itemClickedHandler={itemClickedHandler}
-        onSaveHandler={props.onSaveHandler}
-      />
+      {props.node.item.type === ItemType.FILE && (
+        <Draggable key={props.node.id} id={props.node.id}>
+          <TreeNodeContent
+            key={"content-" + props.node.id}
+            node={props.node}
+            selectedId={props.selectedId}
+            editableId={props.editableId}
+            itemClickedHandler={itemClickedHandler}
+            onSaveHandler={props.onSaveHandler}
+          />
+        </Draggable>
+      )}
 
       {isOpen && (
         <TreeView
+          key={"list-" + props.node.id}
           data={props.node.children ?? []}
           selectedId={props.selectedId}
           editableId={props.editableId}
