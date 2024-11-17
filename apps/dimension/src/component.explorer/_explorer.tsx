@@ -1,18 +1,20 @@
+import { DndContext } from "@dnd-kit/core";
 import {
   faFileCirclePlus,
   faFolderPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useMemo, useReducer, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { ContextMenu } from "../component.contextmenu/_contextmenu";
 import { useContextMenu } from "../component.contextmenu/_contextmenu.hooks";
+import TreeView from "../component.tree-view/_tree-view";
+import type { TreeNode } from "../component.tree-view/_tree-view.interfaces";
 import { TMP_ID } from "../global.static";
 import { ItemType, type Item } from "../page.main/_main.interfaces";
 
-import type { ExplorerProps, TreeNode } from "./_explorer.interfaces";
+import type { ExplorerProps } from "./_explorer.interfaces";
 import * as styles from "./_explorer.styles";
-import TreeView from "./_tree-view";
 
 export function Explorer(props: ExplorerProps) {
   const { clicked, setClicked, coords, setCoords } = useContextMenu();
@@ -109,6 +111,16 @@ export function Explorer(props: ExplorerProps) {
     setEditableId(undefined);
   };
 
+  const dragEndHandler = (event) => {
+    const { over } = event;
+
+    console.log(over);
+
+    // If the item is dropped over a container, set it as the parent
+    // otherwise reset the parent to `null`
+    //setParent(over ? over.id : null);
+  };
+
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div
@@ -140,13 +152,15 @@ export function Explorer(props: ExplorerProps) {
           <FontAwesomeIcon icon={faFolderPlus} />
         </button>
       </div>
-      <TreeView
-        editableId={editableId}
-        data={data}
-        selectedId={props.selectedId}
-        itemClickedHandler={props.itemClickedHandler}
-        onSaveHandler={onSaveHandler}
-      />
+      <DndContext>
+        <TreeView
+          editableId={editableId}
+          data={data}
+          selectedId={props.selectedId}
+          itemClickedHandler={props.itemClickedHandler}
+          onSaveHandler={onSaveHandler}
+        />
+      </DndContext>
     </div>
   );
 }
