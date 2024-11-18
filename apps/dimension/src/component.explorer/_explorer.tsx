@@ -25,22 +25,6 @@ import * as styles from "./_explorer.styles";
 export function Explorer(props: ExplorerProps) {
   const { clicked, setClicked, coords, setCoords } = useContextMenu();
 
-  const mouseSensor = useSensor(MouseSensor, {
-    // Require the mouse to move by 10 pixels before activating
-    activationConstraint: {
-      distance: 10,
-    },
-  });
-  const touchSensor = useSensor(TouchSensor, {
-    // Press delay of 250ms, with tolerance of 5px of movement
-    activationConstraint: {
-      delay: 250,
-      tolerance: 5,
-    },
-  });
-
-  const sensors = useSensors(mouseSensor, touchSensor);
-
   const [items, setItems] = useState<Item[]>([]);
   const [editableId, setEditableId] = useState<string>();
 
@@ -133,12 +117,6 @@ export function Explorer(props: ExplorerProps) {
     setEditableId(undefined);
   };
 
-  const dragEndHandler = (event) => {
-    const { over } = event;
-
-    console.log(over);
-  };
-
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div
@@ -170,15 +148,13 @@ export function Explorer(props: ExplorerProps) {
           <FontAwesomeIcon icon={faFolderPlus} />
         </button>
       </div>
-      <DndContext onDragEnd={dragEndHandler} sensors={sensors}>
-        <TreeView
-          editableId={editableId}
-          data={data}
-          selectedId={props.selectedId}
-          itemClickedHandler={props.itemClickedHandler}
-          onSaveHandler={onSaveHandler}
-        />
-      </DndContext>
+      <TreeView
+        editableId={editableId}
+        data={data}
+        selectedId={props.selectedId}
+        itemClickedHandler={props.itemClickedHandler}
+        onSaveHandler={onSaveHandler}
+      />
     </div>
   );
 }

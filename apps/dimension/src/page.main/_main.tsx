@@ -1,3 +1,10 @@
+import {
+  DndContext,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import type { File, Folder } from "@prisma/client";
 import { useEffect, useState } from "react";
 
@@ -20,6 +27,22 @@ export function Main(props: MainProps) {
   const [openItems, setOpenItems] = useState<Item[]>([]);
   const [selectedItem, setSelectedItem] = useState<Item>();
   const [focusItem, setFocusItem] = useState<Item>();
+
+  const mouseSensor = useSensor(MouseSensor, {
+    // Require the mouse to move by 10 pixels before activating
+    activationConstraint: {
+      distance: 10,
+    },
+  });
+  const touchSensor = useSensor(TouchSensor, {
+    // Press delay of 250ms, with tolerance of 5px of movement
+    activationConstraint: {
+      delay: 250,
+      tolerance: 5,
+    },
+  });
+
+  const sensors = useSensors(mouseSensor, touchSensor);
 
   // temporary dark mode
   useEffect(() => {
@@ -116,41 +139,49 @@ export function Main(props: MainProps) {
     });
   };
 
+  const dragEndHandler = (event) => {
+    const { over } = event;
+
+    console.log(over);
+  };
+
   return (
     <div className={styles.main_wrapper}>
-      <div className={styles.main_menu}>
-        <Menu
-          user={props.user}
-          items={items}
-          itemClickedHandler={itemClickedHandler}
-          createItemHandler={createItemHandler}
-          selectedId={selectedItem?.id}
-        />
-      </div>
-      <div className={styles.main_content}>
-        {openItems.length > 0 && (
-          <div className={styles.main_tab_wrapper}>
-            <TabWrapper>
-              {openItems.map((item) => (
-                <Tab
-                  key={item.id}
-                  item={item}
-                  selected={
-                    item.id === selectedItem?.id || item.id === focusItem?.id
-                  }
-                  closeTabClickedHandler={closeTabClickedHandler}
-                  itemClickedHandler={itemClickedHandler}
-                />
-              ))}
-            </TabWrapper>
-          </div>
-        )}
-        <div className={styles.main_panel}>
-          {focusItem?.type === ItemType.FILE && (
-            <EditorView key={focusItem.id} item={focusItem} />
-          )}
+      <DndContext onDragEnd={dragEndHandler} sensors={sensors}>
+        <div className={styles.main_menu}>
+          <Menu
+            user={props.user}
+            items={items}
+            itemClickedHandler={itemClickedHandler}
+            createItemHandler={createItemHandler}
+            selectedId={selectedItem?.id}
+          />
         </div>
-      </div>
+        <div className={styles.main_content}>
+          {openItems.length > 0 && (
+            <div className={styles.main_tab_wrapper}>
+              <TabWrapper>
+                {openItems.map((item) => (
+                  <Tab
+                    key={item.id}
+                    item={item}
+                    selected={
+                      item.id === selectedItem?.id || item.id === focusItem?.id
+                    }
+                    closeTabClickedHandler={closeTabClickedHandler}
+                    itemClickedHandler={itemClickedHandler}
+                  />
+                ))}
+              </TabWrapper>
+            </div>
+          )}
+          <div className={styles.main_panel}>
+            {focusItem?.type === ItemType.FILE && (
+              <EditorView key={focusItem.id} item={focusItem} />
+            )}
+          </div>
+        </div>
+      </DndContext>
     </div>
   );
 }
