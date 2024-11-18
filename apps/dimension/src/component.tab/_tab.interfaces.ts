@@ -8,7 +8,7 @@ export type TabWrapperProps = {
 
 export type TabProps = {
   item: Item;
-  selected: boolean;
+  open: boolean;
   closeTabClickedHandler: (item: Item) => void;
   itemClickedHandler: (item: Item) => void;
 };

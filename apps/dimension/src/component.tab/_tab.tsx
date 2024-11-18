@@ -17,10 +17,7 @@ export function Tab(props: TabProps) {
   return (
     <div className={styles.tab}>
       <button
-        className={cx(
-          styles.tab_card,
-          props.selected ? styles.tab_selected : "",
-        )}
+        className={cx(styles.tab_card, props.open ? styles.tab_open : "")}
         onClick={itemClickedHandler}
       >
         <FontAwesomeIcon className={styles.tab_icon} icon={faFileLines} />

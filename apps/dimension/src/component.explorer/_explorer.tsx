@@ -1,11 +1,4 @@
 import {
-  DndContext,
-  MouseSensor,
-  TouchSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
   faFileCirclePlus,
   faFolderPlus,
 } from "@fortawesome/free-solid-svg-icons";

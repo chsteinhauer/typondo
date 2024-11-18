@@ -101,7 +101,7 @@ export const tab_text = css`
   white-space: nowrap;
 `;
 
-export const tab_selected = css`
+export const tab_open = css`
   background-color: var(--background-color);
   border-top: 2px solid var(--complementary-color-light);
 

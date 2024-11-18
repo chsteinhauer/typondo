@@ -10,21 +10,28 @@ import { useEffect, useState } from "react";
 
 import { createFile, createFolder } from "../api/requests";
 import { Menu } from "../component.menu/_menu";
-import { Tab } from "../component.tab/_tab";
-import TabWrapper from "../component.tab/_tab.wrapper";
-import { EditorView } from "../page.editor/_editor";
+import { WindowWrapper } from "../page.window/_window-wrapper";
 
-import { ItemType, type Item, type MainProps } from "./_main.interfaces";
+import { useLayers } from "./_layer.hooks";
+import type {
+  ContentLayer,
+  Item,
+  LayoutLayer,
+  MainProps,
+} from "./_main.interfaces";
+import { ItemType } from "./_main.interfaces";
 import * as styles from "./_main.style";
 
 export function Main(props: MainProps) {
+  const { rootLayer, addContentLayer, findLayer } = useLayers();
+
   // data structure states
   const [files, setFiles] = useState<File[]>(props.user?.files ?? []);
   const [folders, setFolders] = useState<Folder[]>(props.user?.folders ?? []);
   const [items, setItems] = useState<Item[]>([]);
 
   // interacted data states
-  const [openItems, setOpenItems] = useState<Item[]>([]);
+  // const [openItems, setOpenItems] = useState<Item[]>([]);
   const [selectedItem, setSelectedItem] = useState<Item>();
   const [focusItem, setFocusItem] = useState<Item>();
 
@@ -104,39 +111,36 @@ export function Main(props: MainProps) {
       return;
     }
 
-    console.log(item.path);
-
     setSelectedItem(item);
 
     if (item.type === ItemType.FILE) {
-      setFocusItem(item);
-      setOpenItems((items) => {
-        if (!items.find((f) => f.id === item.id)) items.push(item);
-        return items;
-      });
+      addContentLayer("root", item);
+      // setFocusItem(item);
+      // setOpenItems((items) => {
+      //   if (!items.find((f) => f.id === item.id)) items.push(item);
+      //   return items;
+      // });
     }
   };
 
-  const closeTabClickedHandler = (item: Item) => {
-    setOpenItems((prev) => {
-      const next = [...prev];
-      const index = next.findIndex((f) => f.id === item.id);
+  const tabClickedHandler = (layer: ContentLayer, item?: Item) => {};
 
-      if (index > -1) next.splice(index, 1);
-
-      if (prev[index]?.id === focusItem?.id && !!next.length) {
-        setSelectedItem(next[next.length - 1]);
-        setFocusItem(next[next.length - 1]);
-        console.log("hello?");
-      }
-
-      if (!next.length) {
-        setFocusItem(undefined);
-        setSelectedItem(undefined);
-      }
-
-      return next;
-    });
+  const closeTabClickedHandler = (layer: ContentLayer, item: Item) => {
+    // setOpenItems((prev) => {
+    //   const next = [...prev];
+    //   const index = next.findIndex((f) => f.id === item.id);
+    //   if (index > -1) next.splice(index, 1);
+    //   if (prev[index]?.id === focusItem?.id && !!next.length) {
+    //     setSelectedItem(next[next.length - 1]);
+    //     setFocusItem(next[next.length - 1]);
+    //     console.log("hello?");
+    //   }
+    //   if (!next.length) {
+    //     setFocusItem(undefined);
+    //     setSelectedItem(undefined);
+    //   }
+    //   return next;
+    // });
   };
 
   const dragEndHandler = (event) => {
@@ -157,30 +161,13 @@ export function Main(props: MainProps) {
             selectedId={selectedItem?.id}
           />
         </div>
-        <div className={styles.main_content}>
-          {openItems.length > 0 && (
-            <div className={styles.main_tab_wrapper}>
-              <TabWrapper>
-                {openItems.map((item) => (
-                  <Tab
-                    key={item.id}
-                    item={item}
-                    selected={
-                      item.id === selectedItem?.id || item.id === focusItem?.id
-                    }
-                    closeTabClickedHandler={closeTabClickedHandler}
-                    itemClickedHandler={itemClickedHandler}
-                  />
-                ))}
-              </TabWrapper>
-            </div>
-          )}
-          <div className={styles.main_panel}>
-            {focusItem?.type === ItemType.FILE && (
-              <EditorView key={focusItem.id} item={focusItem} />
-            )}
-          </div>
-        </div>
+
+        {rootLayer && rootLayer.children.length > 0 && (
+          <WindowWrapper
+            layer={rootLayer}
+            handlers={{ tabClickedHandler, closeTabClickedHandler }}
+          />
+        )}
       </DndContext>
     </div>
   );

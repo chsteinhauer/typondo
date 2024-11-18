@@ -1,7 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
-import type { MainProps } from "./_main";
+import type { UserWithRelations } from "../api/requests";
+
+import type { MainProps } from "./_main.interfaces";
 
 const prisma = new PrismaClient();
 
@@ -32,7 +34,7 @@ export async function getFrontpageServerSideProps(
 
   return {
     props: {
-      user,
+      user: user as UserWithRelations,
     },
   };
 }
