@@ -7,16 +7,32 @@ import type { WindowWrapperProps } from "./_window.interfaces";
 export function WindowWrapper(props: WindowWrapperProps) {
   const { isContentLayer, isLayoutLayer } = useLayers();
 
-  const style = { display: "flex", flexDirection: props.layer.direction };
+  const style = {
+    display: "flex",
+    flexDirection: props.layer.direction,
+    width: "100%",
+  };
 
   return (
     <div style={style}>
       {props.layer.children.map((l) => {
         if (isContentLayer(l)) {
-          return <Window key={l.id} layer={l} handlers={props.handlers} />;
+          return (
+            <Window
+              key={l.id}
+              layer={l}
+              handlers={props.handlers}
+              states={props.states}
+            />
+          );
         } else if (isLayoutLayer(l)) {
           return (
-            <WindowWrapper key={l.id} layer={l} handlers={props.handlers} />
+            <WindowWrapper
+              key={l.id}
+              layer={l}
+              handlers={props.handlers}
+              states={props.states}
+            />
           );
         }
       })}

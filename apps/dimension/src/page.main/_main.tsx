@@ -23,7 +23,7 @@ import { ItemType } from "./_main.interfaces";
 import * as styles from "./_main.style";
 
 export function Main(props: MainProps) {
-  const { rootLayer, addContentLayer, findLayer } = useLayers();
+  const { rootLayer, addContentLayer, findLayer, findItemTab } = useLayers();
 
   // data structure states
   const [files, setFiles] = useState<File[]>(props.user?.files ?? []);
@@ -56,9 +56,9 @@ export function Main(props: MainProps) {
     document.documentElement.classList.toggle("dark-mode", true);
   }, []);
 
-  // useEffect(() => {
-  //   document.documentElement.classList.toggle("dark-purple-palette", true);
-  // }, []);
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark-purple-palette", true);
+  }, []);
 
   useEffect(() => {
     if (!props.user) return;
@@ -114,7 +114,28 @@ export function Main(props: MainProps) {
     setSelectedItem(item);
 
     if (item.type === ItemType.FILE) {
-      addContentLayer("root", item);
+      const tabLayer = findItemTab(item);
+
+      if (tabLayer) {
+        tabLayer.open = item;
+      } else {
+        if (!focusItem) {
+          addContentLayer("root", item);
+        } else {
+          const layer = findItemTab(focusItem);
+
+          if (!layer)
+            throw new Error(
+              "there should be a layer here bro, time for debugging",
+            );
+
+          layer.items.push(item);
+        }
+      }
+
+      setFocusItem(item);
+
+      //addContentLayer("root", item);
       // setFocusItem(item);
       // setOpenItems((items) => {
       //   if (!items.find((f) => f.id === item.id)) items.push(item);
@@ -123,7 +144,10 @@ export function Main(props: MainProps) {
     }
   };
 
-  const tabClickedHandler = (layer: ContentLayer, item?: Item) => {};
+  const tabClickedHandler = (item: Item) => {
+    setSelectedItem(item);
+    setFocusItem(item);
+  };
 
   const closeTabClickedHandler = (layer: ContentLayer, item: Item) => {
     // setOpenItems((prev) => {
@@ -141,6 +165,9 @@ export function Main(props: MainProps) {
     //   }
     //   return next;
     // });
+    // const tabLayer = findItemTab(item);
+    // const index = tabLayer?.items.findIndex((f) => f.id === item.id);
+    // if (index > -1) tabLayer.items.splice(index, 1);
   };
 
   const dragEndHandler = (event) => {
@@ -166,6 +193,7 @@ export function Main(props: MainProps) {
           <WindowWrapper
             layer={rootLayer}
             handlers={{ tabClickedHandler, closeTabClickedHandler }}
+            states={{ selectedItem }}
           />
         )}
       </DndContext>
