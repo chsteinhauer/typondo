@@ -9,18 +9,12 @@ import type {
 } from "./_main.interfaces";
 
 export const useLayers = () => {
-  const [rootLayer, setRootLayer] = useState<LayoutLayer>();
-
-  useEffect(
-    () =>
-      setRootLayer({
-        id: "root",
-        direction: "row",
-        children: [],
-        sort: 0,
-      }),
-    [],
-  );
+  const [rootLayer, setRootLayer] = useState<LayoutLayer>({
+    id: "root",
+    direction: "row",
+    children: [],
+    sort: 0,
+  });
 
   const generateUUID = () => {
     return uuidv4();

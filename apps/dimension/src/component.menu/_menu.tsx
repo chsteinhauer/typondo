@@ -10,6 +10,8 @@ export function Menu(props: MenuProps) {
   const [menuItem, setMenuItem] = useState<MenuItem | undefined>();
 
   const menuLinkClickedHandler = (item: MenuItem) => {
+    document.documentElement.classList.toggle("side-menu-expanded", !menuItem);
+
     setMenuItem((prev: MenuItem) => {
       if (prev) prev.selected = false;
       if (prev?.key != item.key) item.selected = true;

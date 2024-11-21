@@ -26,3 +26,8 @@ export type WindowWrapperProps = {
   handlers: Handlers;
   states: States;
 };
+
+export type WindowDropzoneProps = {
+  item?: Item;
+  children: ReactNode | ReactNode[];
+};

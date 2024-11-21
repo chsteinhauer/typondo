@@ -5,6 +5,7 @@ import TabWrapper from "../component.tab/_tab.wrapper";
 import { EditorView } from "../page.editor/_editor";
 import type { Item } from "../page.main/_main.interfaces";
 
+import { WindowDropzone } from "./_window-dropzone";
 import type { WindowProps } from "./_window.interfaces";
 import * as styles from "./_window.styles";
 
@@ -18,12 +19,12 @@ export function Window(props: WindowProps) {
       if (props.layer.items.length)
         setOpenTabItem(props.layer.items[props.layer.items.length - 1]);
     }
-  }, [openTabItem?.id, props.layer.items, props.states.selectedItem]);
+  }, [openTabItem?.id, props.states.selectedItem, props.layer.items]);
 
   return (
     <div className={styles.window_wrapper}>
       {props.layer.items.length > 0 && (
-        <>
+        <WindowDropzone item={openTabItem}>
           <div className={styles.window_tab_wrapper}>
             <TabWrapper>
               {props.layer.items.map((item) => (
@@ -46,7 +47,7 @@ export function Window(props: WindowProps) {
               <EditorView key={openTabItem.id} item={openTabItem} />
             )}
           </div>
-        </>
+        </WindowDropzone>
       )}
     </div>
   );

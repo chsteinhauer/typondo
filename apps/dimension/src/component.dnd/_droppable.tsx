@@ -7,6 +7,7 @@ import * as styles from "./_dnd.styles";
 export function Droppable(props: DroppableProps) {
   const { isOver, setNodeRef } = useDroppable({
     id: props.id,
+    data: props.data,
   });
 
   return (

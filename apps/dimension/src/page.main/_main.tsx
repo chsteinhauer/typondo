@@ -13,17 +13,12 @@ import { Menu } from "../component.menu/_menu";
 import { WindowWrapper } from "../page.window/_window-wrapper";
 
 import { useLayers } from "./_layer.hooks";
-import type {
-  ContentLayer,
-  Item,
-  LayoutLayer,
-  MainProps,
-} from "./_main.interfaces";
+import type { ContentLayer, Item, MainProps } from "./_main.interfaces";
 import { ItemType } from "./_main.interfaces";
 import * as styles from "./_main.style";
 
 export function Main(props: MainProps) {
-  const { rootLayer, addContentLayer, findLayer, findItemTab } = useLayers();
+  const { rootLayer, addContentLayer, findItemTab } = useLayers();
 
   // data structure states
   const [files, setFiles] = useState<File[]>(props.user?.files ?? []);
@@ -167,10 +162,22 @@ export function Main(props: MainProps) {
     // });
     // const tabLayer = findItemTab(item);
     // const index = tabLayer?.items.findIndex((f) => f.id === item.id);
-    // if (index > -1) tabLayer.items.splice(index, 1);
+    // if (index > -1) tabLayer.items = [...tabLayer.items.splice(index, 1)];
   };
 
   const dragEndHandler = (event) => {
+    const { over } = event;
+
+    console.log(over);
+
+    document.documentElement.classList.toggle("droppable-visible", false);
+  };
+
+  const dragStartHandler = (event) => {
+    document.documentElement.classList.toggle("droppable-visible", true);
+  };
+
+  const dragMoveHandler = (event) => {
     const { over } = event;
 
     console.log(over);
@@ -178,7 +185,12 @@ export function Main(props: MainProps) {
 
   return (
     <div className={styles.main_wrapper}>
-      <DndContext onDragEnd={dragEndHandler} sensors={sensors}>
+      <DndContext
+        onDragEnd={dragEndHandler}
+        onDragStart={dragStartHandler}
+        onDragOver={dragMoveHandler}
+        sensors={sensors}
+      >
         <div className={styles.main_menu}>
           <Menu
             user={props.user}

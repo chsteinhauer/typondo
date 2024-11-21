@@ -7,5 +7,6 @@ export type DraggableProps = {
 
 export type DroppableProps = {
   id: string;
-  children: ReactNode | ReactNode[];
+  data?: Record<string, unknown>;
+  children?: ReactNode | ReactNode[];
 };

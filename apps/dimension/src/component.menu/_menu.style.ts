@@ -2,6 +2,8 @@ import { css } from "@linaria/core";
 //import "../global.style.js";
 
 export const menu_panel_wrapper = css`
+  z-index: 200;
+
   height: 100%;
 
   background-color: var(--primary-color);

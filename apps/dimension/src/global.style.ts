@@ -22,6 +22,12 @@ css`
       --editor-page-color: #ffff;
       --editor-page-border: #d3d3d3;
       --editor-text-color: #000;
+
+      /* state styling variables */
+      --side-menu-size: 56px;
+      --window-header-size: 102px;
+      --droppable-z-index: -1;
+      --droppable-opacity: 0;
     }
 
     #__next,
@@ -40,6 +46,14 @@ css`
         border-radius: 3px;
         outline: 2px solid var(--complementary-color-light);
       } */
+    }
+
+    .droppable-visible {
+      --droppable-z-index: 10;
+    }
+
+    .side-menu-expanded {
+      --side-menu-size: 308px;
     }
 
     .dark-mode {
