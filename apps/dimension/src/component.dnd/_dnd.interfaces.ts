@@ -10,3 +10,9 @@ export type DroppableProps = {
   data?: Record<string, unknown>;
   children?: ReactNode | ReactNode[];
 };
+
+export type DraggableOverlayProps = {
+  x: number;
+  y: number;
+  children: ReactNode | ReactNode[];
+};

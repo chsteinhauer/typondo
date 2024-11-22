@@ -29,6 +29,9 @@ export function Main(props: MainProps) {
   // const [openItems, setOpenItems] = useState<Item[]>([]);
   const [selectedItem, setSelectedItem] = useState<Item>();
   const [focusItem, setFocusItem] = useState<Item>();
+  const [dropzonePosition, setDropzonePosition] = useState<
+    string | undefined
+  >();
 
   const mouseSensor = useSensor(MouseSensor, {
     // Require the mouse to move by 10 pixels before activating
@@ -180,7 +183,18 @@ export function Main(props: MainProps) {
   const dragMoveHandler = (event) => {
     const { over } = event;
 
-    console.log(over);
+    const ref = document.getElementsByClassName(
+      "window_dropzone_overlay_selector",
+    );
+
+    if (over) {
+      const pos = over.data.current.position;
+
+      ref.item(0)?.classList.add(pos);
+      setDropzonePosition(pos);
+    } else if (dropzonePosition) {
+      ref.item(0)?.classList.remove(dropzonePosition);
+    }
   };
 
   return (
