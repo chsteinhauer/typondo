@@ -2,9 +2,8 @@ import { css } from "@linaria/core";
 import "../global.style.ts";
 
 export const editor_wrapper = css`
-  height: 100%;
-  width: 100%;
-
+  /* height: 100%;
+  width: 100%; */
   background-color: var(--background-color);
 `;
 
@@ -104,7 +103,9 @@ export const editor_header = css`
   width: 100%;
 
   background-color: var(--background-color);
-  border-bottom: 1px solid var(--editor-page-border);
+  border-bottom: 1px solid var(--secondary-color-light-trans);
+
+  //border-bottom: 1px solid var(--editor-page-border);
 `;
 
 export const editor_footer = css`

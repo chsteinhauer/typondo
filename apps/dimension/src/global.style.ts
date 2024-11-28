@@ -27,7 +27,7 @@ css`
       --side-menu-size: 56px;
       --window-header-size: 102px;
       --droppable-z-index: -1;
-      --droppable-opacity: 0;
+      --droppable-display: none;
     }
 
     #__next,
@@ -50,6 +50,7 @@ css`
 
     .droppable-visible {
       --droppable-z-index: 10;
+      --droppable-display: block;
     }
 
     .side-menu-expanded {

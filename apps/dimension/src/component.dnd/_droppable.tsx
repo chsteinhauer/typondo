@@ -1,4 +1,5 @@
 import { useDroppable } from "@dnd-kit/core";
+import { cx } from "@linaria/core";
 import React from "react";
 
 import type { DroppableProps } from "./_dnd.interfaces";
@@ -11,7 +12,10 @@ export function Droppable(props: DroppableProps) {
   });
 
   return (
-    <div ref={setNodeRef} className={isOver ? styles.droppable : ""}>
+    <div
+      ref={setNodeRef}
+      className={cx("droppable", isOver ? styles.droppable : "")}
+    >
       {props.children}
     </div>
   );

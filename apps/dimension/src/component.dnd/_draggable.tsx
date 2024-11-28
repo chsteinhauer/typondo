@@ -31,7 +31,11 @@ export function Draggable(props: DraggableProps) {
       //style={style}
       {...listeners}
       {...attributes}
-      className={cx(styles.draggable, isDragging ? "dragging" : "")}
+      className={cx(
+        "draggable",
+        styles.draggable,
+        isDragging ? "dragging" : "",
+      )}
     >
       {props.children}
     </div>

@@ -21,7 +21,7 @@ export function Tab(props: TabProps) {
       <Draggable id={"tab-" + props.item.id}>
         <button
           className={cx(styles.tab_card, props.open ? styles.tab_open : "")}
-          onClick={itemClickedHandler}
+          onMouseDown={itemClickedHandler}
         >
           <FontAwesomeIcon className={styles.tab_icon} icon={faFileLines} />
           <span className={styles.tab_text}>{props.item.item.title}</span>

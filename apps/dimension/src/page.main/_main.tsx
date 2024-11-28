@@ -12,13 +12,14 @@ import { createFile, createFolder } from "../api/requests";
 import { Menu } from "../component.menu/_menu";
 import { WindowWrapper } from "../page.window/_window-wrapper";
 
-import { useLayers } from "./_layer.hooks";
+import { Position, useLayers } from "./_layer.hooks";
 import type { ContentLayer, Item, MainProps } from "./_main.interfaces";
 import { ItemType } from "./_main.interfaces";
 import * as styles from "./_main.style";
 
 export function Main(props: MainProps) {
-  const { rootLayer, addContentLayer, findItemTab } = useLayers();
+  const { rootLayer, addContentLayer, findItemTab, getPositionEnum } =
+    useLayers();
 
   // data structure states
   const [files, setFiles] = useState<File[]>(props.user?.files ?? []);
@@ -32,6 +33,7 @@ export function Main(props: MainProps) {
   const [dropzonePosition, setDropzonePosition] = useState<
     string | undefined
   >();
+  const [draggedItem, setDraggedItem] = useState<Item>();
 
   const mouseSensor = useSensor(MouseSensor, {
     // Require the mouse to move by 10 pixels before activating
@@ -54,9 +56,9 @@ export function Main(props: MainProps) {
     document.documentElement.classList.toggle("dark-mode", true);
   }, []);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark-purple-palette", true);
-  }, []);
+  // useEffect(() => {
+  //   document.documentElement.classList.toggle("dark-purple-palette", true);
+  // }, []);
 
   useEffect(() => {
     if (!props.user) return;
@@ -112,15 +114,15 @@ export function Main(props: MainProps) {
     setSelectedItem(item);
 
     if (item.type === ItemType.FILE) {
-      const tabLayer = findItemTab(item);
+      const tabLayer = findItemTab(item.id);
 
       if (tabLayer) {
         tabLayer.open = item;
       } else {
         if (!focusItem) {
-          addContentLayer("root", item);
+          addContentLayer("root", item, Position.LEFT);
         } else {
-          const layer = findItemTab(focusItem);
+          const layer = findItemTab(focusItem.id);
 
           if (!layer)
             throw new Error(
@@ -163,7 +165,7 @@ export function Main(props: MainProps) {
     //   }
     //   return next;
     // });
-    // const tabLayer = findItemTab(item);
+    // const tabLayer = findItemTab(item.id);
     // const index = tabLayer?.items.findIndex((f) => f.id === item.id);
     // if (index > -1) tabLayer.items = [...tabLayer.items.splice(index, 1)];
   };
@@ -171,13 +173,35 @@ export function Main(props: MainProps) {
   const dragEndHandler = (event) => {
     const { over } = event;
 
-    console.log(over);
+    if (over?.data.current?.position && draggedItem) {
+      const pos = getPositionEnum(over.data.current.position);
+
+      addContentLayer(over.id, draggedItem, pos);
+    }
 
     document.documentElement.classList.toggle("droppable-visible", false);
+
+    const ref = document.getElementsByClassName(
+      "window_dropzone_overlay_selector",
+    );
+
+    if (dropzonePosition) {
+      ref.item(0)?.classList.remove(dropzonePosition);
+    }
+
+    setDraggedItem(undefined);
   };
 
   const dragStartHandler = (event) => {
     document.documentElement.classList.toggle("droppable-visible", true);
+
+    const { active } = event;
+
+    const item = items.find((i) => i.id === active?.id);
+
+    if (item) {
+      setDraggedItem(item);
+    }
   };
 
   const dragMoveHandler = (event) => {
@@ -187,7 +211,7 @@ export function Main(props: MainProps) {
       "window_dropzone_overlay_selector",
     );
 
-    if (over) {
+    if (over?.data.current?.position) {
       const pos = over.data.current.position;
 
       ref.item(0)?.classList.add(pos);

@@ -2,14 +2,22 @@ import { css } from "@linaria/core";
 
 export const window_wrapper = css`
   position: relative;
+  z-index: 10;
 
   height: 100%;
   width: 100%;
 
-  overflow-y: scroll;
+  border-right: 1px solid var(--secondary-color-light-trans);
 `;
 
-export const window = css``;
+export const window = css`
+  height: 100%;
+  width: 100%;
+
+  background-color: var(--background-color);
+
+  overflow: auto;
+`;
 
 export const window_tab_wrapper = css`
   position: fixed;
@@ -19,34 +27,102 @@ export const window_tab_wrapper = css`
 `;
 
 export const window_dropzone_overlay = css`
-  position: fixed;
-  inset: var(--window-header-size) 0 0 var(--side-menu-size);
-  z-index: var(--droppable-z-index);
+  position: absolute;
 
-  border: 1px solid hotpink;
+  background-color: rgba(255 255 255 / 0.2);
+  border: none;
+
+  display: var(--droppable-display);
 
   transition: inset 150ms ease-in-out;
 
+  /* inset: var(--window-header-size) 0 0 var(--side-menu-size); */
+  inset: 0;
+  z-index: var(--droppable-z-index);
+
   &.window_dropzone_overlay_selector {
     &.top {
-      inset: var(--window-header-size) 0
-        calc(50% - var(--window-header-size) * 0.5) var(--side-menu-size);
+      /* inset: var(--window-header-size) 0
+       *        calc(50% - var(--window-header-size) * 0.5)
+       *        var(--side-menu-size);
+       */
+      inset: 0 0 50%;
     }
 
     &.bottom {
-      inset: calc(50% + var(--window-header-size) * 0.5) 0 0
-        var(--side-menu-size);
+      /* inset: calc(50% + var(--window-header-size) * 0.5) 0 0
+        var(--side-menu-size); */
+      inset: 50% 0 0;
     }
 
     &.left {
-      inset: var(--window-header-size) calc(50% - var(--side-menu-size) * 0.5) 0
-        var(--side-menu-size);
+      /* 
+       * inset: var(--window-header-size) calc(50% - var(--side-menu-size) *
+       * 0.5) 0
+        var(--side-menu-size); */
+      inset: 0 50% 0 0;
     }
 
     &.right {
-      inset: var(--window-header-size) 0 0
-        calc((var(--side-menu-size) * 0.5) + 50%);
+      /* inset: var(--window-header-size) 0 0
+        calc((var(--side-menu-size) * 0.5) + 50%); */
+      inset: 0 0 0 50%;
     }
+  }
+
+  .container {
+    position: fixed;
+  }
+`;
+
+export const window_top_dropzone_button = css`
+  transform: translate(-50%, 0);
+
+  /* top: var(--window-header-size);
+  left: var(--side-menu-size);
+  right: 0; */
+
+  /* left: calc(50% + var(--side-menu-size) * 0.5); */
+  top: 0;
+  left: 50%;
+`;
+
+export const window_bottom_dropzone_button = css`
+  transform: translate(-50%, 0);
+
+  /* left: calc(50% + var(--side-menu-size) * 0.5);
+  bottom: 0; */
+  left: 50%;
+  bottom: 0;
+
+  svg {
+    transform: rotate(180deg);
+  }
+`;
+
+export const window_left_dropzone_button = css`
+  transform: translate(0, -50%);
+
+  /* top: calc(50% + var(--window-header-size) * 0.5);
+  left: var(--side-menu-size); */
+  top: 50%;
+  left: 0;
+
+  svg {
+    transform: rotate(270deg);
+  }
+`;
+
+export const window_right_dropzone_button = css`
+  transform: translate(0, -50%);
+
+  /* top: calc(50% + var(--window-header-size) * 0.5);
+  right: 0; */
+  top: 50%;
+  right: 0;
+
+  svg {
+    transform: rotate(90deg);
   }
 `;
 
@@ -56,8 +132,10 @@ export const window_dropzone_wrapper = css`
   height: 100%;
   width: 100%;
 
+  transform: translateZ(0);
+
   .window_droppable_button {
-    position: fixed;
+    position: absolute;
     z-index: calc(var(--droppable-z-index) * 2);
 
     height: 60px;
@@ -66,6 +144,8 @@ export const window_dropzone_wrapper = css`
     background-color: transparent;
     border: none;
 
+    display: var(--droppable-display);
+
     color: white;
 
     opacity: 0.3;
@@ -73,46 +153,13 @@ export const window_dropzone_wrapper = css`
     &:hover {
       opacity: 0.9;
     }
-  }
-`;
 
-export const window_top_dropzone_button = css`
-  top: var(--window-header-size);
-  left: calc(50% + var(--side-menu-size) * 0.5);
+    .container {
+      position: fixed;
 
-  transform: translate(-50%, 0);
-`;
-
-export const window_bottom_dropzone_button = css`
-  left: calc(50% + var(--side-menu-size) * 0.5);
-  bottom: 0;
-
-  transform: translate(-50%, 0);
-
-  svg {
-    transform: rotate(180deg);
-  }
-`;
-
-export const window_left_dropzone_button = css`
-  top: calc(50% + var(--window-header-size) * 0.5);
-  left: var(--side-menu-size);
-
-  transform: translate(0, -50%);
-
-  svg {
-    transform: rotate(270deg);
-  }
-`;
-
-export const window_right_dropzone_button = css`
-  top: calc(50% + var(--window-header-size) * 0.5);
-  right: 0;
-
-  transform: translate(0, -50%);
-
-  svg {
-    transform: rotate(90deg);
+      height: 100%;
+      width: 100%;
+    }
   }
 `;
 
