@@ -1,12 +1,10 @@
-import { useLayers } from "../page.main/_layer.hooks";
+import { isContentLayer, isLayoutLayer } from "../page.main/_layer-logic";
 
 import { Window } from "./_window";
 import type { WindowWrapperProps } from "./_window.interfaces";
 //import * as styles from "./_window.styles";
 
 export function WindowWrapper(props: WindowWrapperProps) {
-  const { isContentLayer, isLayoutLayer } = useLayers();
-
   const style = {
     display: "flex",
     flexDirection: props.layer.direction,

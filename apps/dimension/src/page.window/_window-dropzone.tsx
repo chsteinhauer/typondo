@@ -16,7 +16,7 @@ export function WindowDropzone(props: WindowDropzoneProps) {
             className={cx(
               styles.window_dropzone_overlay,
               "window_dropzone_overlay_selector",
-              "window_dropzone_overlay_selector" + props.item,
+              "window_dropzone_overlay_selector" + props.item.id,
             )}
           ></div>
           <button

@@ -13,6 +13,7 @@ export type Handlers = {
 
 export type States = {
   selectedItem?: Item;
+  focusItem?: Item;
 };
 
 export type WindowProps = {

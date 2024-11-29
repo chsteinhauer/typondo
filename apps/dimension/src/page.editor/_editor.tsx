@@ -36,8 +36,8 @@ export function EditorView(props: EditorProps) {
   const saveContent = async (_e: Editor | null, _f: File) => {
     setIsSaving(true);
 
-    _f.htmlContent = _e?.getHTML() ?? "";
-    await updateFile(_f);
+    // _f.htmlContent = _e?.getHTML() ?? "";
+    // await updateFile(_f);
 
     setIsSaving(false);
   };

@@ -7,20 +7,21 @@ import {
 } from "@dnd-kit/core";
 import type { File, Folder } from "@prisma/client";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { createFile, createFolder } from "../api/requests";
 import { Menu } from "../component.menu/_menu";
 import { WindowWrapper } from "../page.window/_window-wrapper";
+import type { RootState } from "../store";
 
-import { Position, useLayers } from "./_layer.hooks";
+import { setFocus, setSelected } from "./_item-state";
+import { getPositionEnum } from "./_layer-logic";
+import { addContentLayer } from "./_layer-state";
 import type { ContentLayer, Item, MainProps } from "./_main.interfaces";
 import { ItemType } from "./_main.interfaces";
 import * as styles from "./_main.style";
 
 export function Main(props: MainProps) {
-  const { rootLayer, addContentLayer, findItemTab, getPositionEnum } =
-    useLayers();
-
   // data structure states
   const [files, setFiles] = useState<File[]>(props.user?.files ?? []);
   const [folders, setFolders] = useState<Folder[]>(props.user?.folders ?? []);
@@ -28,12 +29,16 @@ export function Main(props: MainProps) {
 
   // interacted data states
   // const [openItems, setOpenItems] = useState<Item[]>([]);
-  const [selectedItem, setSelectedItem] = useState<Item>();
-  const [focusItem, setFocusItem] = useState<Item>();
-  const [dropzonePosition, setDropzonePosition] = useState<
-    string | undefined
-  >();
+  // const [selectedItem, setSelectedItem] = useState<Item>();
+  // const [focusItem, setFocusItem] = useState<Item>();
+  const [dropzonePosition, setDropzonePosition] = useState<string>();
+  const [dropzoneId, setDropzoneId] = useState<string>();
   const [draggedItem, setDraggedItem] = useState<Item>();
+
+  const selected = useSelector((state: RootState) => state.layer.selected);
+  const focus = useSelector((state: RootState) => state.layer.focus);
+  const root = useSelector((state: RootState) => state.layer.root);
+  const dispatch = useDispatch();
 
   const mouseSensor = useSensor(MouseSensor, {
     // Require the mouse to move by 10 pixels before activating
@@ -104,49 +109,9 @@ export function Main(props: MainProps) {
     }
   };
 
-  const itemClickedHandler = (item?: Item) => {
-    if (!item) {
-      setSelectedItem(undefined);
-
-      return;
-    }
-
-    setSelectedItem(item);
-
-    if (item.type === ItemType.FILE) {
-      const tabLayer = findItemTab(item.id);
-
-      if (tabLayer) {
-        tabLayer.open = item;
-      } else {
-        if (!focusItem) {
-          addContentLayer("root", item, Position.LEFT);
-        } else {
-          const layer = findItemTab(focusItem.id);
-
-          if (!layer)
-            throw new Error(
-              "there should be a layer here bro, time for debugging",
-            );
-
-          layer.items.push(item);
-        }
-      }
-
-      setFocusItem(item);
-
-      //addContentLayer("root", item);
-      // setFocusItem(item);
-      // setOpenItems((items) => {
-      //   if (!items.find((f) => f.id === item.id)) items.push(item);
-      //   return items;
-      // });
-    }
-  };
-
   const tabClickedHandler = (item: Item) => {
-    setSelectedItem(item);
-    setFocusItem(item);
+    dispatch(setSelected(item));
+    dispatch(setFocus(item));
   };
 
   const closeTabClickedHandler = (layer: ContentLayer, item: Item) => {
@@ -174,9 +139,11 @@ export function Main(props: MainProps) {
     const { over } = event;
 
     if (over?.data.current?.position && draggedItem) {
-      const pos = getPositionEnum(over.data.current.position);
+      const position = getPositionEnum(over.data.current.position);
 
-      addContentLayer(over.id, draggedItem, pos);
+      dispatch(
+        addContentLayer({ parentId: over.id, item: draggedItem, position }),
+      );
     }
 
     document.documentElement.classList.toggle("droppable-visible", false);
@@ -204,20 +171,29 @@ export function Main(props: MainProps) {
     }
   };
 
-  const dragMoveHandler = (event) => {
+  const dragOverHandler = (event) => {
     const { over } = event;
-
-    const ref = document.getElementsByClassName(
-      "window_dropzone_overlay_selector",
-    );
 
     if (over?.data.current?.position) {
       const pos = over.data.current.position;
 
+      const id = over.id.replace(pos + "-", "");
+      const ref = document.getElementsByClassName(
+        "window_dropzone_overlay_selector" + id,
+      );
+
       ref.item(0)?.classList.add(pos);
       setDropzonePosition(pos);
-    } else if (dropzonePosition) {
+      setDropzoneId(id);
+    } else if (dropzonePosition && dropzoneId) {
+      const ref = document.getElementsByClassName(
+        "window_dropzone_overlay_selector" + dropzoneId,
+      );
+
       ref.item(0)?.classList.remove(dropzonePosition);
+
+      setDropzonePosition(undefined);
+      setDropzoneId(undefined);
     }
   };
 
@@ -226,24 +202,24 @@ export function Main(props: MainProps) {
       <DndContext
         onDragEnd={dragEndHandler}
         onDragStart={dragStartHandler}
-        onDragOver={dragMoveHandler}
+        onDragOver={dragOverHandler}
         sensors={sensors}
       >
         <div className={styles.main_menu}>
           <Menu
             user={props.user}
             items={items}
-            itemClickedHandler={itemClickedHandler}
+            itemClickedHandler={() => {}}
             createItemHandler={createItemHandler}
-            selectedId={selectedItem?.id}
+            selectedId={selected?.id}
           />
         </div>
 
-        {rootLayer && rootLayer.children.length > 0 && (
+        {root && root.children.length > 0 && (
           <WindowWrapper
-            layer={rootLayer}
+            layer={root}
             handlers={{ tabClickedHandler, closeTabClickedHandler }}
-            states={{ selectedItem }}
+            states={{ selectedItem: selected, focusItem: focus }}
           />
         )}
       </DndContext>

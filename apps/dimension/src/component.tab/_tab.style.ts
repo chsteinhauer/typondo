@@ -103,12 +103,14 @@ export const tab_text = css`
 
 export const tab_open = css`
   background-color: var(--background-color);
-  border-top: 2px solid var(--complementary-color-light);
-
   color: var(--background-text-color);
 
   &:hover {
     background-color: var(--background-color);
     color: var(--background-text-color);
   }
+`;
+
+export const tab_focus = css`
+  border-top: 2px solid var(--complementary-color-light);
 `;
