@@ -70,7 +70,7 @@ export function TreeNode(props: TreeNodeProps) {
             node={props.node}
             selectedId={props.selectedId}
             editableId={props.editableId}
-            itemClickedHandler={itemClickedHandler}
+            toggleButtonHandler={toggleNode}
             onSaveHandler={props.onSaveHandler}
           />
         </div>
@@ -83,7 +83,7 @@ export function TreeNode(props: TreeNodeProps) {
             node={props.node}
             selectedId={props.selectedId}
             editableId={props.editableId}
-            itemClickedHandler={itemClickedHandler}
+            toggleButtonHandler={toggleNode}
             onSaveHandler={props.onSaveHandler}
           />
         </Draggable>

@@ -27,7 +27,7 @@ export type TreeNodeProps = {
 
 export type TreeNodeContentProps = {
   node: ITreeNode;
-  itemClickedHandler: (e) => void;
+  toggleButtonHandler: (e) => void;
   onSaveHandler: (value: string, item: Item) => void;
   selectedId?: string;
   editableId?: string;

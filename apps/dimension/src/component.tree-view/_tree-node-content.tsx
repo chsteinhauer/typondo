@@ -33,8 +33,12 @@ export function TreeNodeContent(props: TreeNodeContentProps) {
     }
   };
 
-  const treeNodeButtonClickedHandler = () => {
+  const treeNodeButtonClickedHandler = (e) => {
     const item = props.node.item;
+
+    if (props.node.children?.length) {
+      props.toggleButtonHandler(e);
+    }
 
     dispatch(setSelected(item));
 
