@@ -94,7 +94,8 @@ export const editor_banner_saving = css`
 `;
 
 export const editor_header = css`
-  position: fixed;
+  position: sticky;
+  top: 35px;
   z-index: 1;
 
   margin-top: calc(35px);

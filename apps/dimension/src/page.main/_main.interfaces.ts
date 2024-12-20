@@ -19,7 +19,7 @@ export type ContentLayer = {
   items: Item[];
   open: Item;
   sort: number;
-  parent: LayoutLayer;
+  parentId: string;
 };
 
 export type LayoutLayer = {
@@ -27,7 +27,7 @@ export type LayoutLayer = {
   direction: "row" | "column";
   children: Layer[];
   sort: number;
-  parent?: LayoutLayer;
+  parentId?: string;
 };
 
 export type Layer = ContentLayer | LayoutLayer;

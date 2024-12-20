@@ -31,7 +31,7 @@ const createNewContentLayer = (
     items: [item],
     open: item,
     sort: 0,
-    parent,
+    parentId: parent.id,
   };
 };
 
@@ -170,7 +170,7 @@ export const removeItemFromContentLayerLogic = (
   let newFocusItem: Item | undefined = focus;
 
   if (layer.items.length === 0) {
-    const parent = findLayer(root, layer.parent.id) as LayoutLayer;
+    const parent = findLayer(root, layer.parentId) as LayoutLayer;
     const cindex = layer.items.findIndex((i) => i.id === item.id);
     parent.children.splice(cindex, 1);
 
@@ -216,6 +216,7 @@ export const addContentLayerLogic = (
     } else {
       p.children.unshift(newContentLayer);
     }
+
     //p.children.sort((a, b) => a.sort - b.sort);
   };
 
@@ -229,7 +230,9 @@ export const addContentLayerLogic = (
   }
 
   if (isContentLayer(parent)) {
-    const grandparent = findLayer(root, parent.parent.id) as LayoutLayer;
+    const grandparent = findLayer(root, parent.parentId) as LayoutLayer;
+
+    console.log(parent.parentId, grandparent?.id);
 
     let newParent = undefined;
 
@@ -241,17 +244,15 @@ export const addContentLayerLogic = (
         direction: getDirection(position),
         children: [parent],
         sort: parent.sort,
-        parent: grandparent,
+        parentId: grandparent.id,
       };
 
-      const index = grandparent.children.findIndex((c) => c.id === parentId);
+      const index = grandparent.children.findIndex((c) => c.id === parent.id);
 
       if (index > -1) {
         grandparent.children[index] = newParent;
       }
     }
-
-    console.log(newParent);
 
     addNewContentLayer(item, newParent);
   } else if (isLayoutLayer(parent)) {

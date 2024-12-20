@@ -48,7 +48,7 @@ export function Explorer(props: ExplorerProps) {
 
     const root = items.filter((i) => !i.item.folderId);
 
-    return [...root.map((i) => genTreeData(i, 0, []))];
+    return root?.length > 0 ? [...root.map((i) => genTreeData(i, 0, []))] : [];
   }, [items]);
 
   const explorerClickedHandler = () => {

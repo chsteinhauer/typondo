@@ -4,23 +4,22 @@ export const window_wrapper = css`
   position: relative;
   z-index: 10;
 
-  height: 100%;
   width: 100%;
 
   border-right: 1px solid var(--secondary-color-light-trans);
-`;
-
-export const window = css`
-  height: 100%;
-  width: 100%;
-
-  background-color: var(--background-color);
+  border-bottom: 1px solid var(--secondary-color-light-trans);
 
   overflow: auto;
 `;
 
+export const window = css`
+  width: 100%;
+  background-color: var(--background-color);
+`;
+
 export const window_tab_wrapper = css`
-  position: fixed;
+  position: sticky;
+  top: 0;
   z-index: 1;
 
   width: 100%;
@@ -128,10 +127,7 @@ export const window_right_dropzone_button = css`
 
 export const window_dropzone_wrapper = css`
   position: relative;
-
-  height: 100%;
   width: 100%;
-
   transform: translateZ(0);
 
   .window_droppable_button {

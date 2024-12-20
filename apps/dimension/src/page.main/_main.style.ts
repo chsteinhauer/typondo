@@ -5,7 +5,7 @@ export const crossfadeDurationMs = 150;
 export const main_wrapper = css`
   position: relative;
 
-  height: 100%;
+  height: 100vh;
   width: 100%;
 
   background-color: var(--background-color);
